@@ -13,9 +13,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
-public class TicketService {
-	private static Validator validator;
-	
+public class TicketService {	
 	List<Ticket> tickets = new ArrayList<>();
 	
 	public static void main(String[] args) {
