@@ -49,4 +49,9 @@ public class TicketService {
 				.orElseThrow(() -> new InstanceNotFoundException());
 	}
 
+	public List<Ticket> getTicketsBySector(SectorHall sectorHall)
+	{
+		return tickets.stream().filter(ticket -> ticket.getStadiumSector() == sectorHall).toList();
+	}
+
 }
