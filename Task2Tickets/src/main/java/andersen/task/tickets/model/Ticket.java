@@ -3,17 +3,14 @@ package andersen.task.tickets.model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import com.mifmif.common.regex.Generex;
 
-import andersen.task.tickets.validation.SectorHallConstraint;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -24,7 +21,16 @@ public class Ticket {
 	private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@Getter
 	private static final BigDecimal MAX_BACKPACK_WEIGHT = new BigDecimal("20.250");
+	/**
+	 * Because of regex TICKET_ID_GENERATOR and generated
+	 * value in constructor,
+	 * this field's length is always between 1 and 4
+	 * 
+	 */
 	private final char[] ticketID;
+	/**
+	 * 	I assume you've expected here char[] ?
+	 */
 	@Setter
 	@Getter
 	@Size (max = 10)
