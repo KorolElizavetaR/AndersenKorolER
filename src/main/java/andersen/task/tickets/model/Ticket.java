@@ -49,9 +49,7 @@ public class Ticket {
 	private boolean isPromo;
 	@Getter
 	@Setter
-	@SectorHallConstraint
-	//Заменить на энам
-	private char stadiumSector;
+	private SectorHall stadiumSector;
 	@Getter
 	@Setter
 	@Positive
@@ -73,7 +71,7 @@ public class Ticket {
 		this.startsAt = startsAt;
 	}
 	
-	public Ticket(String consertHall, int eventCode, Calendar startsAt, boolean isPromo, char stadiumSector, double price)
+	public Ticket(String consertHall, int eventCode, Calendar startsAt, boolean isPromo, SectorHall stadiumSector, double price)
 	{
 		this(consertHall, eventCode, startsAt);
 		this.isPromo = isPromo;
