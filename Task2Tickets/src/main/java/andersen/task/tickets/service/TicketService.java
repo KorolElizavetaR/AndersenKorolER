@@ -1,6 +1,7 @@
 package andersen.task.tickets.service;
 
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -10,8 +11,8 @@ import java.util.Set;
 import javax.management.InstanceNotFoundException;
 
 import andersen.task.tickets.model.ContentPrinter;
-import andersen.task.tickets.model.SectorHall;
-import andersen.task.tickets.model.Ticket;
+import andersen.task.tickets.model.ticket.SectorHall;
+import andersen.task.tickets.model.ticket.Ticket;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
@@ -21,11 +22,8 @@ public class TicketService implements ContentPrinter {
 
 	public TicketService() {
 		tickets = new ArrayList<>(Arrays.asList(
-				new Ticket("5 Hall", 345, new Calendar.Builder().setDate(2024, 11, 30).setTimeOfDay(19, 00, 0).build()),
-				new Ticket("AAA", 231, new Calendar.Builder().setDate(2024, 10, 29).setTimeOfDay(19, 00, 0).build(),
-						false, SectorHall.A, 45.6056374),
-				new Ticket("BBB", 231, new Calendar.Builder().setDate(2025, 1, 20).setTimeOfDay(13, 00, 0).build(),
-						false, SectorHall.A, 55.55)));
+				new Ticket("TEST1", 221, LocalDateTime.of(2024, 11, 10, 19, 30), false, SectorHall.A, 34.05),
+				new Ticket("TEST1", 221, LocalDateTime.of(2024, 11, 20, 9, 30), false, SectorHall.B, 65.953525)));
 	}
 
 	public Ticket addTicket(Ticket ticket) {
@@ -35,7 +33,6 @@ public class TicketService implements ContentPrinter {
 			if (!violations.isEmpty())
 				throw new ConstraintViolationException(violations);
 			tickets.add(ticket);
-			System.out.println("Ticket is succesfully added!");
 		} catch (ConstraintViolationException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}
