@@ -1,13 +1,17 @@
-package andersen.task.tickets.model;
+package andersen.task.tickets.model.ticket;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+import andersen.task.tickets.model.ContentPrinter;
+import andersen.task.tickets.model.Indexable;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -16,8 +20,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ticket extends Shareable implements ContentPrinter, Indexable {
-	private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+public class Ticket extends Indexable implements ContentPrinter {
+	 private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	@Getter
 	private static final BigDecimal MAX_BACKPACK_WEIGHT = new BigDecimal("20.250");
 	@Getter
@@ -27,10 +31,10 @@ public class Ticket extends Shareable implements ContentPrinter, Indexable {
 	@Max(value = 999)
 	@Getter
 	private int eventCode;
-	private final Date createdAt;
+	private final LocalDateTime createdAt;
 	@Future
 	@Setter
-	private Calendar startsAt;
+	private LocalDateTime startsAt;
 	@Getter
 	private boolean isPromo;
 	@Getter
@@ -42,17 +46,17 @@ public class Ticket extends Shareable implements ContentPrinter, Indexable {
 	private BigDecimal price;
 
 	public Ticket() {
-		this.createdAt = new Date();
+		this.createdAt = LocalDateTime.now();
 	}
 
-	public Ticket(String consertHall, int eventCode, Calendar startsAt) {
+	public Ticket(String consertHall, int eventCode, LocalDateTime startsAt) {
 		this();
 		this.consertHall = consertHall;
 		this.eventCode = eventCode;
 		this.startsAt = startsAt;
 	}
 
-	public Ticket(String consertHall, int eventCode, Calendar startsAt, boolean isPromo, SectorHall stadiumSector,
+	public Ticket(String consertHall, int eventCode, LocalDateTime startsAt, boolean isPromo, SectorHall stadiumSector,
 			double price) {
 		this(consertHall, eventCode, startsAt);
 		this.isPromo = isPromo;
@@ -65,7 +69,7 @@ public class Ticket extends Shareable implements ContentPrinter, Indexable {
 	}
 
 	public String getStartsAt() {
-		return DATETIME_FORMAT.format(startsAt.getTime());
+		return DATETIME_FORMAT.format(startsAt);
 	}
 
 	@Override
@@ -108,5 +112,13 @@ public class Ticket extends Shareable implements ContentPrinter, Indexable {
 				System.out.println(ex.getLocalizedMessage());
 			}
 		}
+	}
+
+	public String shared(String phone) {
+		return this + " is shared via phone number:" + phone;
+	}
+
+	public String shared(String phone, String email) {
+		return shared(phone) + "\nand email:email";
 	}
 }
