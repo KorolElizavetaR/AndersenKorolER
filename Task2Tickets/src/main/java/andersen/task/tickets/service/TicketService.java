@@ -1,5 +1,6 @@
 package andersen.task.tickets.service;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -8,13 +9,14 @@ import java.util.Set;
 
 import javax.management.InstanceNotFoundException;
 
+import andersen.task.tickets.model.ContentPrinter;
 import andersen.task.tickets.model.SectorHall;
 import andersen.task.tickets.model.Ticket;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 
-public class TicketService {
+public class TicketService implements ContentPrinter {
 	List<Ticket> tickets = new ArrayList<>();
 
 	public TicketService() {
@@ -45,8 +47,25 @@ public class TicketService {
 	}
 
 	public Ticket getTicketByID(String id) throws InstanceNotFoundException {
-		return tickets.stream().filter(ticket -> ticket.getTicketID().equals(id)).findFirst()
+		return tickets.stream().filter(ticket -> ticket.getID().equals(id)).findFirst()
 				.orElseThrow(() -> new InstanceNotFoundException());
 	}
 
+	@Override
+	public void printer() {
+		StringBuilder parameters = new StringBuilder();
+		Method[] methods = this.getClass().getDeclaredMethods();
+		for (Method method : methods) {
+			System.out.print(method.getReturnType().getSimpleName() + " " + method.getName() + "(");
+
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			if (parameterTypes.length == 0)
+				continue;
+			for (Class<?> params : parameterTypes) {
+				parameters.append(params.getSimpleName() + ", ");
+			}
+			parameters.setLength(parameters.length() - 2);
+			System.out.println(")");
+		}
+	}
 }

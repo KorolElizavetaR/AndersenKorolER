@@ -20,21 +20,23 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		TicketService service = new TicketService();
-		Ticket ticket1 = service.addTicket(new Ticket("TEST1", 345,
-				new Calendar.Builder().setDate(2024, 11, 30).setTimeOfDay(19, 00, 0).build()));
+		Ticket ticket1 = service.addTicket(
+				new Ticket("TEST1", 345, new Calendar.Builder().setDate(2024, 11, 30).setTimeOfDay(19, 00, 0).build()));
 
 		service.addTicket(new Ticket("55555555555555555", 345,
 				new Calendar.Builder().setDate(2024, 11, 30).setTimeOfDay(19, 00, 0).build())); // ConstraintViolation
 
-		service.addTicket(new Ticket("TEST2", 345,
-				new Calendar.Builder().setDate(2020, 11, 30).setTimeOfDay(19, 00, 0).build())); // ConstraintViolation
+		service.addTicket(
+				new Ticket("TEST2", 345, new Calendar.Builder().setDate(2020, 11, 30).setTimeOfDay(19, 00, 0).build())); // ConstraintViolation
 
 		service.getAllTickets().stream().forEach(System.out::println);
 
+		ticket1.printer();
+		service.printer();
 		try {
-			System.out.println(service.getTicketByID(ticket1.getTicketID()));
+			System.out.println(service.getTicketByID(ticket1.getID()));
 		} catch (InstanceNotFoundException e) {
-			System.out.printf("Ticket with id %s is not found", ticket1.getTicketID());
+			System.out.printf("Ticket with id %s is not found", ticket1.getID());
 		}
 	}
 

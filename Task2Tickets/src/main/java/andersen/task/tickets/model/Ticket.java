@@ -1,12 +1,12 @@
 package andersen.task.tickets.model;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import com.mifmif.common.regex.Generex;
+import java.util.Objects;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
@@ -16,33 +16,22 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ticket {
-	private static final Generex TICKET_ID_GENERATOR = new Generex("[a-zA-Z1-9]{1,4}");
+public class Ticket extends Shareable implements ContentPrinter, Indexable {
 	private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@Getter
 	private static final BigDecimal MAX_BACKPACK_WEIGHT = new BigDecimal("20.250");
-	private final char[] ticketID;
-	@Setter
 	@Getter
-	@Size (max = 10)
+	@Size(max = 10)
 	private String consertHall;
-	@Override
-	public String toString() {
-		return "Ticket [ticketID=" + getTicketID() + ", consertHall=" + consertHall + ", eventCode="
-				+ eventCode + ", createdAt=" + getCreatedAt() + ", startsAt=" + getStartsAt() + ", isPromo=" + isPromo
-				+ ", stadiumSector=" + stadiumSector + ", price=" + price + ", MAX_BACKPACK_WEIGHT = " + MAX_BACKPACK_WEIGHT + "]";
-	}
-
-	@Min (value = 100)
-	@Max (value = 999)
-	@Setter
+	@Min(value = 100)
+	@Max(value = 999)
 	@Getter
 	private int eventCode;
 	private final Date createdAt;
 	@Future
+	@Setter
 	private Calendar startsAt;
 	@Getter
-	@Setter
 	private boolean isPromo;
 	@Getter
 	@Setter
@@ -51,41 +40,73 @@ public class Ticket {
 	@Setter
 	@Positive
 	private BigDecimal price;
-	
+
 	public Ticket() {
-		char[] generatedId = TICKET_ID_GENERATOR.random().toCharArray();
-		ticketID = new char[generatedId.length];
-		for (int i = 0; i < generatedId.length; i++) {
-			this.ticketID[i] = generatedId[i];
-		}
 		this.createdAt = new Date();
 	}
-	
+
 	public Ticket(String consertHall, int eventCode, Calendar startsAt) {
 		this();
 		this.consertHall = consertHall;
 		this.eventCode = eventCode;
 		this.startsAt = startsAt;
 	}
-	
-	public Ticket(String consertHall, int eventCode, Calendar startsAt, boolean isPromo, SectorHall stadiumSector, double price)
-	{
+
+	public Ticket(String consertHall, int eventCode, Calendar startsAt, boolean isPromo, SectorHall stadiumSector,
+			double price) {
 		this(consertHall, eventCode, startsAt);
 		this.isPromo = isPromo;
 		this.stadiumSector = stadiumSector;
 		this.price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP);
 	}
-	
-	public String getTicketID()
-	{
-		return String.copyValueOf(ticketID);
-	}
 
 	public String getCreatedAt() {
 		return DATETIME_FORMAT.format(createdAt);
 	}
-	
+
 	public String getStartsAt() {
 		return DATETIME_FORMAT.format(startsAt.getTime());
+	}
+
+	@Override
+	public String toString() {
+		return "Ticket [ticketID=" + getID() + ", consertHall=" + consertHall + ", eventCode=" + eventCode
+				+ ", createdAt=" + getCreatedAt() + ", startsAt=" + getStartsAt() + ", isPromo=" + isPromo
+				+ ", stadiumSector=" + stadiumSector + ", price=" + price + ", MAX_BACKPACK_WEIGHT = "
+				+ MAX_BACKPACK_WEIGHT + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(consertHall, createdAt, eventCode, isPromo, price, stadiumSector, startsAt, id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ticket other = (Ticket) obj;
+		return Objects.equals(consertHall, other.consertHall) && Objects.equals(createdAt, other.createdAt)
+				&& eventCode == other.eventCode && isPromo == other.isPromo && Objects.equals(price, other.price)
+				&& stadiumSector == other.stadiumSector && Objects.equals(startsAt, other.startsAt)
+				&& Objects.equals(id, other.id);
+	}
+
+	@Override
+	public void printer() {
+		Field[] fields = this.getClass().getDeclaredFields();
+		for (Field field : fields) {
+			try {
+				field.setAccessible(true);
+				System.out.println(field.getType().getSimpleName() + " " + field.getName() + " : " + field.get(this));
+				field.setAccessible(false);
+			} catch (IllegalAccessException ex) {
+				System.out.println(ex.getLocalizedMessage());
+			}
+		}
 	}
 }
