@@ -21,7 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Ticket extends Indexable implements ContentPrinter {
-	 private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+	private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	@Getter
 	private static final BigDecimal MAX_BACKPACK_WEIGHT = new BigDecimal("20.250");
 	@Getter
