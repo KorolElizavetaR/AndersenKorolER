@@ -6,7 +6,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import andersen.dev.tickets.validator.ValidDateForTicketType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -19,13 +21,16 @@ import lombok.NoArgsConstructor;
 @Data
 @Component
 @Scope (scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@ValidDateForTicketType
 public class Ticket {
 	@NotBlank
 	@Pattern (regexp = "[A-Z]{3}")
 	private String ticketName;
+	@NotNull
 	private TicketType ticketType;
 	@PastOrPresent
 	private LocalDate startDate;
 	@Positive
-	private int price; // The concepts of “even” and “odd” only apply to integers, not to floating point numbers
+	// add even annotation
+	private int price; 
 }
