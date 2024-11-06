@@ -1,12 +1,12 @@
 package andersen.dev.tickets.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.parser.TicketParser;
@@ -18,7 +18,7 @@ import jakarta.validation.Validation;
 public class TicketService {
 	@Autowired
 	TicketParser parser;
-	List <Ticket> tickets;
+	List <Ticket> tickets = new ArrayList<>();
 	// добавь мапу для отслеживания ошибок
 	
 	// later handle the exception
