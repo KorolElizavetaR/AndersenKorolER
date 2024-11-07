@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class TicketParser {
 	private final ObjectMapper mapper = new ObjectMapper();
 	private final String FILEPATH;
-	
+
 	TicketParser(@Value("${json.ticket.filepath}") String filepath) {
 		FILEPATH = filepath;
 	}
@@ -32,20 +32,24 @@ public class TicketParser {
 		List<Ticket> tickets = new ArrayList<>();
 
 		mapper.findAndRegisterModules();
-		JsonNode nodes = mapper.readTree(new File(FILEPATH));
+		JsonNode nodes;
+		try {
+			nodes = mapper.readTree(new File(FILEPATH));
+		} catch (IOException ex) {
+			throw new IOException(FILEPATH + " is not a valid directory");
+		}
 
 		for (JsonNode element : nodes) {
 			String ticketName = element.path("ticketName").asText();
 			String ticketTypeString = element.path("ticketType").asText();
 			TicketType ticketType;
-			try
-			{
+			try {
 				ticketType = TicketType.valueOf(ticketTypeString);
-			}
-			catch (IllegalArgumentException ex)
-			{
-				/* Definetly an antipattern, hovewer, i haven't figured
-				another way to resolve this issue :[ */
+			} catch (IllegalArgumentException ex) {
+				/*
+				 * Definetly an antipattern, hovewer, i haven't figured another way to resolve
+				 * this issue :[
+				 */
 				ticketType = null;
 			}
 			String dateAsText = element.path("startDate").asText();

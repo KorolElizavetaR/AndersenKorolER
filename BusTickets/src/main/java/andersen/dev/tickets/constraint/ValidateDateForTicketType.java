@@ -1,4 +1,4 @@
-package andersen.dev.tickets.validator;
+package andersen.dev.tickets.constraint;
 
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.model.TicketType;

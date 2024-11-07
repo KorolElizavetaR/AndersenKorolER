@@ -6,7 +6,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import andersen.dev.tickets.validator.ValidDateForTicketType;
+import andersen.dev.tickets.constraint.Even;
+import andersen.dev.tickets.constraint.ValidDateForTicketType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -31,6 +32,6 @@ public class Ticket {
 	@PastOrPresent
 	private LocalDate startDate;
 	@Positive
-	// add even annotation
+	@Even
 	private int price; 
 }

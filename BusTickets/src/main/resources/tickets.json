@@ -12,6 +12,12 @@
   "price": 10
  },
  {
+  "ticketName": "asda",
+  "ticketType": "DAY",
+  "startDate": "2025-01-01",
+  "price": 10
+ },
+ {
   "ticketName": "CLA",
   "ticketType": "PRIME",
   "startDate": null,
