@@ -10,14 +10,14 @@ import java.util.Set;
 
 import javax.management.InstanceNotFoundException;
 
-import andersen.task.tickets.model.ContentPrinter;
+import andersen.task.tickets.model.ContentPrintering;
 import andersen.task.tickets.model.ticket.SectorHall;
 import andersen.task.tickets.model.ticket.Ticket;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 
-public class TicketService implements ContentPrinter {
+public class TicketService implements ContentPrintering {
 	List<Ticket> tickets = new ArrayList<>();
 
 	public TicketService() {

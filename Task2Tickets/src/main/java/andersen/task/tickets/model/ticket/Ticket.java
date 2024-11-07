@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import andersen.task.tickets.model.ContentPrinter;
+import andersen.task.tickets.model.ContentPrintering;
 import andersen.task.tickets.model.Indexable;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
@@ -20,7 +20,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ticket extends Indexable implements ContentPrinter {
+public class Ticket extends Indexable implements ContentPrintering {
 	private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	@Getter
 	private static final BigDecimal MAX_BACKPACK_WEIGHT = new BigDecimal("20.250");

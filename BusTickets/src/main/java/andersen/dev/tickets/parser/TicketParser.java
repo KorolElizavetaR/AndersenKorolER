@@ -22,10 +22,10 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class TicketParser {
 	private final ObjectMapper mapper = new ObjectMapper();
-	private final String FILEPATH;
+	private final String filepath;
 
 	TicketParser(@Value("${json.ticket.filepath}") String filepath) {
-		FILEPATH = filepath;
+		this.filepath = filepath;
 	}
 
 	public List<Ticket> fromJsonToTicket() throws IOException {
@@ -34,9 +34,9 @@ public class TicketParser {
 		mapper.findAndRegisterModules();
 		JsonNode nodes;
 		try {
-			nodes = mapper.readTree(new File(FILEPATH));
+			nodes = mapper.readTree(new File(filepath));
 		} catch (IOException ex) {
-			throw new IOException(FILEPATH + " is not a valid directory");
+			throw new IOException(filepath + " is not a valid directory");
 		}
 
 		for (JsonNode element : nodes) {
@@ -46,17 +46,11 @@ public class TicketParser {
 			try {
 				ticketType = TicketType.valueOf(ticketTypeString);
 			} catch (IllegalArgumentException ex) {
-				/*
-				 * Definetly an antipattern, hovewer, i haven't figured another way to resolve
-				 * this issue :[
-				 */
 				ticketType = null;
 			}
 			String dateAsText = element.path("startDate").asText();
 			LocalDate startDate = (dateAsText == "null" || dateAsText.isBlank()) ? null
 					: LocalDate.parse(dateAsText, DateTimeFormatter.ISO_LOCAL_DATE);
-			// LocalDate startDate = LocalDate.parse(element.path("startDate").asText(),
-			// DateTimeFormatter.ISO_LOCAL_DATE);
 			int price = element.path("price").asInt();
 			tickets.add(new Ticket(ticketName, ticketType, startDate, price));
 		}

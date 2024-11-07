@@ -20,7 +20,7 @@ public class Client extends User {
 	public Client(TicketService service) {
 		super(service, "Client");
 	}
-	
+
 	public Client(TicketService service, String phone) {
 		this(service);
 		this.phone = phone;
@@ -30,7 +30,7 @@ public class Client extends User {
 		this(service, phone);
 		this.email = email;
 	}
-	
+
 	public Ticket getTicket() throws InstanceNotFoundException {
 		return service.getTicketByID(ticketId);
 	}
@@ -45,5 +45,5 @@ public class Client extends User {
 		else
 			return "No phone number is registred";
 	}
-	
+
 }

@@ -22,8 +22,11 @@ import jakarta.validation.Validation;
 import lombok.Getter;
 import lombok.Setter;
 
-@Component
-public class TicketService {
+/* 	I believe TicketDAO suits this class better
+ * 	since no business logic implemented here
+ */
+@Component 
+public class TicketDAO {
 	@Autowired
 	@Getter
 	private TicketValidator validator;

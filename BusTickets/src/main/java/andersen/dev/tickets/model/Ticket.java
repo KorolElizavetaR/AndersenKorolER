@@ -2,10 +2,6 @@ package andersen.dev.tickets.model;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import andersen.dev.tickets.constraint.Even;
 import andersen.dev.tickets.constraint.ValidDateForTicketType;
 import jakarta.validation.constraints.NotBlank;
@@ -14,14 +10,17 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//@Component
+//@Scope (scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Component
-@Scope (scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @ValidDateForTicketType
 public class Ticket {
 	@NotBlank

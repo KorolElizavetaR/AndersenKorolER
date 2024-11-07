@@ -13,11 +13,11 @@ import jakarta.validation.Validation;
 
 public class UserService {
 	List<User> users;
-	
+
 	public UserService() {
 		users = new ArrayList<User>();
 	}
-	
+
 	public User addUser(User user) {
 		try {
 			Set<ConstraintViolation<User>> violations = Validation.buildDefaultValidatorFactory().getValidator()
@@ -30,9 +30,8 @@ public class UserService {
 		}
 		return user;
 	}
-	
-	public User getUserById(String id) throws InstanceNotFoundException
-	{
+
+	public User getUserById(String id) throws InstanceNotFoundException {
 		return users.stream().filter(user -> user.getID().equals(id)).findFirst()
 				.orElseThrow(() -> new InstanceNotFoundException());
 	}
