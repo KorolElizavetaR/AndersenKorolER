@@ -100,20 +100,6 @@ public class Ticket extends Indexable implements ContentPrintering {
 				&& Objects.equals(id, other.id);
 	}
 
-	@Override
-	public void printer() {
-		Field[] fields = this.getClass().getDeclaredFields();
-		for (Field field : fields) {
-			try {
-				field.setAccessible(true);
-				System.out.println(field.getType().getSimpleName() + " " + field.getName() + " : " + field.get(this));
-				field.setAccessible(false);
-			} catch (IllegalAccessException ex) {
-				System.out.println(ex.getLocalizedMessage());
-			}
-		}
-	}
-
 	public String shared(String phone) {
 		return this + " is shared via phone number:" + phone;
 	}

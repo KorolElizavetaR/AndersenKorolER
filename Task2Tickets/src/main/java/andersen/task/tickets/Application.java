@@ -27,10 +27,7 @@ public class Application {
 		userService.addUser(admin);
 		userService.addUser(client1);
 		userService.addUser(client2);
-		/*
-		 * Here i'm imitating the real process of getting something out of DB (even if
-		 * variables actually hold the same link)
-		 */
+		
 		Admin adminFromId = (Admin) userService.getUserById(adminId);
 		Client clientFromId = (Client) userService.getUserById(client2Id);
 

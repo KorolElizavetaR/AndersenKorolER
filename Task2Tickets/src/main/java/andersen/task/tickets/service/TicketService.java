@@ -50,19 +50,7 @@ public class TicketService implements ContentPrintering {
 
 	@Override
 	public void printer() {
-		StringBuilder parameters = new StringBuilder();
-		Method[] methods = this.getClass().getDeclaredMethods();
-		for (Method method : methods) {
-			System.out.print(method.getReturnType().getSimpleName() + " " + method.getName() + "(");
-
-			Class<?>[] parameterTypes = method.getParameterTypes();
-			if (parameterTypes.length == 0)
-				continue;
-			for (Class<?> params : parameterTypes) {
-				parameters.append(params.getSimpleName() + ", ");
-			}
-			parameters.setLength(parameters.length() - 2);
-			System.out.println(")");
-		}
+		System.out.println("From TicketService");
+		ContentPrintering.super.printer();
 	}
 }
