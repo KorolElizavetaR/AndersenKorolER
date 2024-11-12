@@ -14,9 +14,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Component
-//@Scope (scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
