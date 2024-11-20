@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.parser.TicketParser;
+import andersen.dev.tickets.repository.TicketRepository;
 import andersen.dev.tickets.validator.TicketValidator;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolation;
@@ -20,26 +21,30 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
 import jakarta.validation.Validation;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Component 
-public class TicketDAO {
+@Component
+@RequiredArgsConstructor
+public class TicketService {
 	@Autowired
 	@Getter
 	private TicketValidator validator;
-	private List<Ticket> tickets;
+
+	@Autowired
+	private final TicketRepository repository;
 
 	@PostConstruct
 	public void init() throws IOException {
-		tickets = validator.getValidTickets();
+		repository.setTickets(validator.getValidTickets());
 	}
 
 	public void addTicket(Ticket ticket) {
-		tickets.add(ticket);
+		repository.addTicket(ticket);
 	}
 
 	public List<Ticket> getTickets() {
-		return this.tickets;
+		return repository.getTickets();
 	}
 
 }

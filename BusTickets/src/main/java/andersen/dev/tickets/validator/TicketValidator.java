@@ -13,35 +13,40 @@ import org.springframework.stereotype.Component;
 
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.parser.TicketParser;
+import andersen.dev.tickets.repository.TicketRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
 import jakarta.validation.Validation;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class TicketValidator {
-	List<Ticket> allTickets;
+	@Autowired
+	private final TicketRepository repos;
 	@Autowired
 	private TicketParser parser;
 	/**
-	 * 	Important note: if field, for example, breaks several constraints,
-	 * 	it is considered as one violation.
-	 * 	If price = -17, it technically breaks two violations, but considered as one
+	 * Important note: if field, for example, breaks several constraints, it is
+	 * considered as one violation. If price = -17, it technically breaks two
+	 * violations, but considered as one
 	 */
 	@Getter
 	private Map<String, Integer> violatedFieldsCounter = new HashMap<>();
 	@Getter
 	private int ticketCounterBeforeCheckingViolations;
-	
+
 	@PostConstruct
-	public void init() throws IOException{
-		allTickets = parser.fromJsonToTicket();
+	public void init() throws IOException {
+		repos.setTickets(parser.fromJsonToTicket());
 	}
 
 	public List<Ticket> getValidTickets() throws IOException {
 		List<Ticket> validTickets = new ArrayList<>();
+		List<Ticket> allTickets = repos.getTickets();
 		ticketCounterBeforeCheckingViolations = allTickets.size();
 		for (Ticket ticket : allTickets) {
 			try {
@@ -52,7 +57,7 @@ public class TicketValidator {
 		}
 		return validTickets;
 	}
-	
+
 	public Ticket addTicket(Ticket ticket) {
 		Set<ConstraintViolation<Ticket>> violations = Validation.buildDefaultValidatorFactory().getValidator()
 				.validate(ticket);
@@ -63,7 +68,8 @@ public class TicketValidator {
 			violatedFields.forEach(field -> {
 				violatedFieldsCounter.put(field, violatedFieldsCounter.getOrDefault(field, 0) + 1);
 			});
-			violations.forEach(violation -> errorMsg.append(violation.getPropertyPath()).append(" " + violation.getMessage()).append("\n\t"));
+			violations.forEach(violation -> errorMsg.append(violation.getPropertyPath())
+					.append(" " + violation.getMessage()).append("\n\t"));
 			throw new ConstraintViolationException(errorMsg.toString(), violations);
 		}
 		return ticket;
