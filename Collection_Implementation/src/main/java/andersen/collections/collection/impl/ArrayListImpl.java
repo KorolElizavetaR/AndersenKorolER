@@ -87,8 +87,8 @@ public class ArrayListImpl<T> implements IArrayList<T> {
 			for (int i = 0; i < index; i++) {
 				bufArray[i] = array[i];
 			}
-			for (int i = index; i < size-1; i++) {
-				bufArray[i] = array[i+1];
+			for (int i = index; i < size - 1; i++) {
+				bufArray[i] = array[i + 1];
 			}
 			array = bufArray;
 		} else {

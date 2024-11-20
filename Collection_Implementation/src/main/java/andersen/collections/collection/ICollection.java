@@ -6,5 +6,4 @@ public interface ICollection<T> {
 	 */
 	ICollection put(T element);
 	
-	
 }

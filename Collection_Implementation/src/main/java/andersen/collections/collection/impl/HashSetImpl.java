@@ -12,6 +12,10 @@ import lombok.Data;
 import lombok.Getter;
 
 public class HashSetImpl<T> implements IHashSet<T>, Iterable<T> {
+	/**
+	 * I've decided to use ArrayList to ease my suffer from working with memory,
+	 * hope that's okay.
+	 */
 	@Getter
 	List<MappedValue> hashArr = new ArrayList<HashSetImpl<T>.MappedValue>();
 
@@ -35,6 +39,7 @@ public class HashSetImpl<T> implements IHashSet<T>, Iterable<T> {
 		return this;
 	}
 
+	@Override
 	public boolean delete(T element) {
 		int index = contains(element);
 		if (index < 0) {
@@ -44,31 +49,15 @@ public class HashSetImpl<T> implements IHashSet<T>, Iterable<T> {
 		return true;
 	}
 
+	@Override
 	public int contains(T element) {
 		MappedValue hashElement = new MappedValue(element, element.hashCode());
-		return Collections.binarySearch(hashArr, hashElement, Comparator.comparing(MappedValue::getHash));
+		return contains(hashElement);
 	}
 
 	private int contains(MappedValue hashElement) {
 		return Collections.binarySearch(hashArr, hashElement, Comparator.comparing(MappedValue::getHash));
 	}
-
-//	private int binarySearcherForHash(long key) {
-//		int low = 0;
-//		int high = hashArr.size() - 1;
-//
-//		while (low <= high) {
-//			int mid = (low + high) >>> 1;
-//			long midVal = hashArr.get(mid).hash;
-//			if (midVal < key)
-//				low = mid + 1;
-//			else if (midVal > key)
-//				high = mid - 1;
-//			else
-//				return mid; 
-//		}
-//		return -(low + 1);
-//	}
 
 	@Override
 	public Iterator<T> iterator() {
