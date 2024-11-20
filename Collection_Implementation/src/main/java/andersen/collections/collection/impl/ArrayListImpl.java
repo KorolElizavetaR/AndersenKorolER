@@ -10,7 +10,7 @@ public class ArrayListImpl<T> implements IArrayList<T> {
 	 */
 	private final byte RESIZE_FACTOR = 2;
 
-	T array[];
+	private T array[];
 	@Getter
 	private int size;
 	private int capacity;
@@ -47,7 +47,7 @@ public class ArrayListImpl<T> implements IArrayList<T> {
 
 	@Override
 	public ArrayListImpl<T> put(int index, T element) {
-		if (index > size)
+		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException(index);
 		if (index == size) {
 			return put(element);
