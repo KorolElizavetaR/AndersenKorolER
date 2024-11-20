@@ -1,1 +1,1 @@
-json.ticket.filepath = path to ticket json
+json.ticket.filepath = src/main/resources/tickets.json 
