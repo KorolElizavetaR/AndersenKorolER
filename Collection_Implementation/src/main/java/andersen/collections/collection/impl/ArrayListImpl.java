@@ -4,7 +4,7 @@ import andersen.collections.collection.IArrayList;
 import lombok.Getter;
 
 public class ArrayListImpl<T> implements IArrayList<T> {
-	private final int DEFAULT_CAPACITY = 4;
+	private final int DEFAULT_CAPACITY = 10;
 	/**
 	 * Defines the grows/shrink of {@link #capacity}
 	 */
