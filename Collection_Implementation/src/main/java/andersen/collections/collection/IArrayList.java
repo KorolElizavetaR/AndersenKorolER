@@ -12,6 +12,6 @@ public interface IArrayList<T> extends ICollection<T>{
 	 * Insert @param element to @param index position
 	 * 
 	 */
-	void put(int index, T element);
+	ICollection<T> put(int index, T element);
 	
 }

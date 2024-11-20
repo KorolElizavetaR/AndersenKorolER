@@ -4,7 +4,7 @@ import andersen.collections.collection.IArrayList;
 import lombok.Getter;
 
 public class ArrayListImpl<T> implements IArrayList<T> {
-	private final int DEFAULT_CAPACITY = 10;
+	private final int DEFAULT_CAPACITY = 4;
 	/**
 	 * Defines the grows/shrink of {@link #capacity}
 	 */
@@ -46,7 +46,12 @@ public class ArrayListImpl<T> implements IArrayList<T> {
 	}
 
 	@Override
-	public void put(int index, T element) {
+	public ArrayListImpl<T> put(int index, T element) {
+		if (index > size)
+			throw new IndexOutOfBoundsException(index);
+		if (index == size) {
+			return put(element);
+		}
 		if (requiresResizing()) {
 			capacity *= RESIZE_FACTOR;
 			T[] bufArray = (T[]) new Object[capacity];
@@ -59,24 +64,40 @@ public class ArrayListImpl<T> implements IArrayList<T> {
 			bufArray[index] = element;
 			array = bufArray;
 		} else {
-			for (int i = index; i < size; i++) {
-				array[i + 1] = array[i];
+			for (int i = size; i > index; i--) {
+				array[i] = array[i - 1];
 			}
 			array[index] = element;
 		}
+		size++;
+		return this;
 	}
 
-	// REQUIRES REFACTORING //
 	private boolean requiresResizing() {
-		if ((size < capacity / RESIZE_FACTOR && capacity > DEFAULT_CAPACITY) || size == capacity) {
-			return true;
-		}
-		return false;
+		return (size <= (capacity / RESIZE_FACTOR) && capacity > DEFAULT_CAPACITY) || size == capacity;
 	}
 
 	@Override
 	public boolean delete(int index) {
-		// TODO Auto-generated method stub
+		if (index > size)
+			throw new IndexOutOfBoundsException(index);
+		if (requiresResizing()) {
+			capacity /= RESIZE_FACTOR;
+			T[] bufArray = (T[]) new Object[capacity];
+			for (int i = 0; i < index; i++) {
+				bufArray[i] = array[i];
+			}
+			for (int i = index; i < size-1; i++) {
+				bufArray[i] = array[i+1];
+			}
+			array = bufArray;
+		} else {
+			for (int i = index; i < size; i++) {
+				array[i] = array[i + 1];
+			}
+			array[size] = null;
+		}
+		size--;
 		return false;
 	}
 }
