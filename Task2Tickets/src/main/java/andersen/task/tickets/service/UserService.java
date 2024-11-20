@@ -7,16 +7,15 @@ import java.util.Set;
 import javax.management.InstanceNotFoundException;
 
 import andersen.task.tickets.model.user.User;
+import andersen.task.tickets.repository.UserRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class UserService {
-	List<User> users;
-
-	public UserService() {
-		users = new ArrayList<User>();
-	}
+	private final UserRepository repository;
 
 	public User addUser(User user) {
 		try {
@@ -24,7 +23,7 @@ public class UserService {
 					.validate(user);
 			if (!violations.isEmpty())
 				throw new ConstraintViolationException(violations);
-			users.add(user);
+			repository.addUser(user);
 		} catch (ConstraintViolationException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}
@@ -32,7 +31,6 @@ public class UserService {
 	}
 
 	public User getUserById(String id) throws InstanceNotFoundException {
-		return users.stream().filter(user -> user.getID().equals(id)).findFirst()
-				.orElseThrow(() -> new InstanceNotFoundException());
+		return repository.getUserById(id);
 	}
 }

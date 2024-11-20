@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.management.InstanceNotFoundException;
 
-import andersen.task.tickets.model.ticket.Ticket;
+import andersen.task.tickets.model.Ticket;
 import andersen.task.tickets.model.user.Admin;
 import andersen.task.tickets.model.user.Client;
+import andersen.task.tickets.repository.TicketRepository;
+import andersen.task.tickets.repository.UserRepository;
 import andersen.task.tickets.service.TicketService;
 import andersen.task.tickets.service.UserService;
 
@@ -16,14 +18,14 @@ public class Application {
 	List<Ticket> tickets = new ArrayList<>();
 
 	public static void main(String[] args) throws InstanceNotFoundException {
-		TicketService service = new TicketService();
+		TicketService service = new TicketService(new TicketRepository());
 		Admin admin = new Admin(service);
 		String adminId = admin.getID();
 		Client client1 = new Client(service);
 		Client client2 = new Client(service, "+375(29)123-45-67");
 		String client2Id = client2.getID();
 
-		UserService userService = new UserService();
+		UserService userService = new UserService(new UserRepository());
 		userService.addUser(admin);
 		userService.addUser(client1);
 		userService.addUser(client2);
@@ -43,8 +45,7 @@ public class Application {
 		clientFromId.setTicketId(ticketIdFromAdmin);
 		System.out.println(clientFromId.shareTicket());
 
-		ticket0.printer();
-		service.printer();
+		service.printMethods();
 	}
 
 }

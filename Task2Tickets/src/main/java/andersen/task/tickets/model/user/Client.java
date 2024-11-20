@@ -2,7 +2,7 @@ package andersen.task.tickets.model.user;
 
 import javax.management.InstanceNotFoundException;
 
-import andersen.task.tickets.model.ticket.Ticket;
+import andersen.task.tickets.model.Ticket;
 import andersen.task.tickets.service.TicketService;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class Client extends User {
 	private String ticketId;
 
 	public Client(TicketService service) {
-		super(service, "Client");
+		super(service, Roles.ROLE_CLIENT);
 	}
 
 	public Client(TicketService service, String phone) {

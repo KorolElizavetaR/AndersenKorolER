@@ -1,4 +1,4 @@
-package andersen.task.tickets.model.ticket;
+package andersen.task.tickets.model;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -10,8 +10,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import andersen.task.tickets.model.ContentPrintering;
-import andersen.task.tickets.model.Indexable;
+import andersen.task.tickets.model.ticket.SectorHall;
+import andersen.task.tickets.util.Indexable;
+import andersen.task.tickets.util.Printable;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -20,7 +21,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ticket extends Indexable implements ContentPrintering {
+public class Ticket extends Indexable implements Printable {
 	private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	@Getter
 	private static final BigDecimal MAX_BACKPACK_WEIGHT = new BigDecimal("20.250");

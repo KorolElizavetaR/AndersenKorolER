@@ -1,4 +1,4 @@
-package andersen.task.tickets.model;
+package andersen.task.tickets.util;
 
 import com.mifmif.common.regex.Generex;
 

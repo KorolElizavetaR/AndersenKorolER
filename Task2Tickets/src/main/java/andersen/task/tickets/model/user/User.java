@@ -1,7 +1,7 @@
 package andersen.task.tickets.model.user;
 
-import andersen.task.tickets.model.Indexable;
 import andersen.task.tickets.service.TicketService;
+import andersen.task.tickets.util.Indexable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,5 +9,5 @@ import lombok.Getter;
 public abstract class User extends Indexable{
 	protected final TicketService service;
 	@Getter
-	protected String role;
+	protected Roles role;
 }

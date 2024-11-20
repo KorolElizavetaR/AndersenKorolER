@@ -1,10 +1,15 @@
-package andersen.task.tickets.model;
+package andersen.task.tickets.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public interface ContentPrintering {
-	default void printer() {
+/*
+	  It was suggested to move this code into util class. However, i've
+	  just moved it into *.util package since the task must satisfy a
+	  requirement of having Printable class.
+ */
+public interface Printable {
+	default void printFields() {
 		System.out.println("Fields");
 		Field[] fields = this.getClass().getDeclaredFields();
 		for (Field field : fields) {
@@ -17,6 +22,10 @@ public interface ContentPrintering {
 				System.out.println(ex.getLocalizedMessage());
 			}
 		}
+
+	}
+
+	default void printMethods() {
 		StringBuilder parameters = new StringBuilder();
 		System.out.println("Methods: ");
 		Method[] methods = this.getClass().getDeclaredMethods();
