@@ -4,7 +4,7 @@ interface ICollection<T> {
 	/**
 	 * 	Appends  @param element to the end list
 	 */
-	void put(T element);
+	ICollection put(T element);
 	
 	/**
 	 * Find and remove by @param index if exists
