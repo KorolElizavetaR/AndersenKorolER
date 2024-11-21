@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.management.InstanceNotFoundException;
 
+import andersen.task.tickets.exception.TicketNotFoundException;
 import andersen.task.tickets.model.Ticket;
 import andersen.task.tickets.model.enumeration.SectorHall;
 import andersen.task.tickets.repository.TicketRepository;
@@ -41,7 +42,7 @@ public class TicketService implements Printable {
 	}
 
 	public Ticket getTicketByID(String id) throws InstanceNotFoundException {
-		return repository.getTicket(id);
+		return repository.getTicketById(id).orElseThrow(()->new TicketNotFoundException(id));
 	}
 
 	@Override
