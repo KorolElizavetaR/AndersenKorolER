@@ -8,7 +8,7 @@ import java.util.List;
 import javax.management.InstanceNotFoundException;
 
 import andersen.task.tickets.model.Ticket;
-import andersen.task.tickets.model.ticket.SectorHall;
+import andersen.task.tickets.model.enumeration.SectorHall;
 import lombok.Getter;
 
 public class TicketRepository {

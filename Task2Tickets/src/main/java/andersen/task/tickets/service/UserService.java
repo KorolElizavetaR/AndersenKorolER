@@ -6,7 +6,11 @@ import java.util.Set;
 
 import javax.management.InstanceNotFoundException;
 
+import andersen.task.tickets.exception.TicketNotFoundException;
+import andersen.task.tickets.exception.UserNotFoundException;
+import andersen.task.tickets.model.Ticket;
 import andersen.task.tickets.model.user.User;
+import andersen.task.tickets.repository.TicketRepository;
 import andersen.task.tickets.repository.UserRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -15,7 +19,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class UserService {
-	private final UserRepository repository;
+	private final UserRepository userRepository;
+	private final TicketRepository ticketRepository;
 
 	public User addUser(User user) {
 		try {
@@ -23,7 +28,7 @@ public class UserService {
 					.validate(user);
 			if (!violations.isEmpty())
 				throw new ConstraintViolationException(violations);
-			repository.addUser(user);
+			userRepository.addUser(user);
 		} catch (ConstraintViolationException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}
@@ -31,6 +36,17 @@ public class UserService {
 	}
 
 	public User getUserById(String id) throws InstanceNotFoundException {
-		return repository.getUserById(id);
+		return userRepository.getUserById(id).orElseThrow(()->new UserNotFoundException(id));
+	}
+	
+	public Ticket shareTicket(String userId, String ticketId) {
+		User user = userRepository.getUserById(userId).orElseThrow(()->new UserNotFoundException(id));
+		Ticket ticket = user.getTickets().stream().filter(ticket -> ticket.getID().equals(ticketId)).findFirst().orElseThrow(() -> new TicketNotFoundException(userId));
+		if (!(user.ge == null || email.isBlank()))
+			return getTicket().shared(phone, email);
+		if (!(phone == null || phone.isEmpty()))
+			return getTicket().shared(phone);
+		else
+			return "No phone number is registred";
 	}
 }

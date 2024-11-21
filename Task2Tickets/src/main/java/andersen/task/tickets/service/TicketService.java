@@ -11,7 +11,7 @@ import java.util.Set;
 import javax.management.InstanceNotFoundException;
 
 import andersen.task.tickets.model.Ticket;
-import andersen.task.tickets.model.ticket.SectorHall;
+import andersen.task.tickets.model.enumeration.SectorHall;
 import andersen.task.tickets.repository.TicketRepository;
 import andersen.task.tickets.util.Printable;
 import jakarta.validation.ConstraintViolation;

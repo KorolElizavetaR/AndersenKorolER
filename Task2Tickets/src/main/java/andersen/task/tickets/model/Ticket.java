@@ -10,12 +10,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import andersen.task.tickets.model.ticket.SectorHall;
+import andersen.task.tickets.model.enumeration.SectorHall;
 import andersen.task.tickets.util.Indexable;
 import andersen.task.tickets.util.Printable;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -28,12 +29,10 @@ public class Ticket extends Indexable implements Printable {
 	@Getter
 	@Size(max = 10)
 	private String consertHall;
-	@Min(value = 100)
-	@Max(value = 999)
+	@Pattern (regexp = "\\d{3}")
 	@Getter
-	private int eventCode;
+	private String eventCode;
 	private final LocalDateTime createdAt;
-	@Future
 	@Setter
 	private LocalDateTime startsAt;
 	@Getter
@@ -45,19 +44,22 @@ public class Ticket extends Indexable implements Printable {
 	@Setter
 	@Positive
 	private BigDecimal price;
+	@Getter
+	private boolean isExpired;
 
 	public Ticket() {
 		this.createdAt = LocalDateTime.now();
 	}
 
-	public Ticket(String consertHall, int eventCode, LocalDateTime startsAt) {
+	public Ticket(String consertHall, String eventCode, LocalDateTime startsAt) {
 		this();
 		this.consertHall = consertHall;
 		this.eventCode = eventCode;
 		this.startsAt = startsAt;
+		this.isExpired = !this.startsAt.isAfter(LocalDateTime.now());
 	}
 
-	public Ticket(String consertHall, int eventCode, LocalDateTime startsAt, boolean isPromo, SectorHall stadiumSector,
+	public Ticket(String consertHall, String eventCode, LocalDateTime startsAt, boolean isPromo, SectorHall stadiumSector,
 			double price) {
 		this(consertHall, eventCode, startsAt);
 		this.isPromo = isPromo;
@@ -101,11 +103,11 @@ public class Ticket extends Indexable implements Printable {
 				&& Objects.equals(id, other.id);
 	}
 
-	public String shared(String phone) {
-		return this + " is shared via phone number:" + phone;
-	}
-
-	public String shared(String phone, String email) {
-		return shared(phone) + "\nand email:email";
-	}
+//	public String shared(String phone) {
+//		return this + " is shared via phone number:" + phone;
+//	}
+//
+//	public String shared(String phone, String email) {
+//		return shared(phone) + "\nand email:email";
+//	}
 }

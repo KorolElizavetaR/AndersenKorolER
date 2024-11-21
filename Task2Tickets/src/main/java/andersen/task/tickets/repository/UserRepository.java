@@ -2,6 +2,7 @@ package andersen.task.tickets.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.management.InstanceNotFoundException;
 
@@ -18,8 +19,7 @@ public class UserRepository {
 		users.add(user);
 	}
 	
-	public User getUserById(String id) throws InstanceNotFoundException {
-		return users.stream().filter(user -> user.getID().equals(id)).findFirst()
-				.orElseThrow(() -> new InstanceNotFoundException());
+	public Optional<User> getUserById(String id) throws InstanceNotFoundException {
+		return users.stream().filter(user -> user.getID().equals(id)).findFirst();
 	}
 }
