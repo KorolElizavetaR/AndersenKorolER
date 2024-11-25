@@ -12,9 +12,8 @@ public class Application {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(Application.class, args);
 		TicketService service = context.getBean(TicketService.class);
-		service.getValidator().getViolatedFieldsCounter()
-		.forEach((field, counter) -> System.out.println(String.format("%s : %s violations", field, counter)));
-		System.out.println("Total = " + service.getValidator().getTicketCounterBeforeCheckingViolations());
+		service.getAllTicketRepository().getViolations().forEach(System.out::println);
+		System.out.println("Total = " + service.getAllTicketRepository().getAllTickets().size());
 		System.out.println("Valid = " + service.getTickets().size());
 		service.getTickets().stream().forEach(System.out::println);
 	}

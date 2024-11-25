@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.parser.TicketParser;
+import andersen.dev.tickets.repository.ViolatedTicketRepository;
 import andersen.dev.tickets.repository.TicketRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolation;
@@ -26,43 +27,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TicketValidator {
 	@Autowired
-	private final TicketRepository repos;
-	@Autowired
-	private TicketParser parser;
+	private final ViolatedTicketRepository allTicketRepository;
+
 	/**
-	 * Important note: if field, for example, breaks several constraints, it is
-	 * considered as one violation. If price = -17, it technically breaks two
+	 * If field breaks several constraints, it is considered as 
+	 * one violation. If price = -17, it technically breaks two
 	 * violations, but considered as one
 	 */
-	@Getter
-	private Map<String, Integer> violatedFieldsCounter = new HashMap<>();
-	@Getter
-	private int ticketCounterBeforeCheckingViolations;
-
-	@PostConstruct
-	public void init() throws IOException {
-		repos.setTickets(parser.fromJsonToTicket());
-	}
-
-	public List<Ticket> getValidTickets() throws IOException {
-		List<Ticket> validTickets = new ArrayList<>();
-		List<Ticket> allTickets = repos.getTickets();
-		ticketCounterBeforeCheckingViolations = allTickets.size();
-		for (Ticket ticket : allTickets) {
-			try {
-				validTickets.add(addTicket(ticket));
-			} catch (ConstraintViolationException ex) {
-				System.out.println(ex.getMessage());
-			}
-		}
-		return validTickets;
-	}
-
-	public Ticket addTicket(Ticket ticket) {
+	public Ticket validateTicket(Ticket ticket) {
 		Set<ConstraintViolation<Ticket>> violations = Validation.buildDefaultValidatorFactory().getValidator()
 				.validate(ticket);
 		Set<String> violatedFields = violations.stream().map(ConstraintViolation::getPropertyPath).map(Path::toString)
 				.collect(Collectors.toSet());
+		Map<String, Integer> violatedFieldsCounter = new HashMap<>();
 		if (!violations.isEmpty()) {
 			StringBuilder errorMsg = new StringBuilder(ticket + " is violating given conditions:\n\t");
 			violatedFields.forEach(field -> {
