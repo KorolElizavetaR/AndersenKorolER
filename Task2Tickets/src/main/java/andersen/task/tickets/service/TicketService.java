@@ -12,7 +12,6 @@ import javax.management.InstanceNotFoundException;
 
 import andersen.task.tickets.exception.TicketNotFoundException;
 import andersen.task.tickets.model.Ticket;
-import andersen.task.tickets.model.enumeration.SectorHall;
 import andersen.task.tickets.repository.TicketRepository;
 import andersen.task.tickets.util.Printable;
 import jakarta.validation.ConstraintViolation;
@@ -31,6 +30,7 @@ public class TicketService implements Printable {
 			if (!violations.isEmpty())
 				throw new ConstraintViolationException(violations);
 			repository.addTicket(ticket);
+
 		} catch (ConstraintViolationException ex) {
 			System.out.println(ex.getLocalizedMessage());
 		}
@@ -48,6 +48,7 @@ public class TicketService implements Printable {
 	@Override
 	public void printMethods() {
 		System.out.println("From TicketService");
-		Printable.super.printMethods();;
+		Printable.super.printMethods();
 	}
+
 }

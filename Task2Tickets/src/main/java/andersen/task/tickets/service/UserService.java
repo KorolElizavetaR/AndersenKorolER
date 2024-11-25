@@ -6,7 +6,6 @@ import andersen.task.tickets.exception.TicketNotFoundException;
 import andersen.task.tickets.exception.UserNotFoundException;
 import andersen.task.tickets.model.Ticket;
 import andersen.task.tickets.model.User;
-import andersen.task.tickets.repository.TicketRepository;
 import andersen.task.tickets.repository.UserRepository;
 import andersen.task.tickets.util.Printable;
 import andersen.task.tickets.util.TicketShare;
@@ -18,13 +17,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService implements Printable {
 	private final UserRepository userRepository;
-	
+
 	public User addUser(User user) {
 		try {
 			Set<ConstraintViolation<User>> violations = Validation.buildDefaultValidatorFactory().getValidator()
 					.validate(user);
 			if (!violations.isEmpty())
 				throw new ConstraintViolationException(violations);
+
 			userRepository.addUser(user);
 		} catch (ConstraintViolationException ex) {
 			System.out.println(ex.getLocalizedMessage());
