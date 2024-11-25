@@ -102,12 +102,4 @@ public class Ticket extends Indexable implements Printable {
 				&& stadiumSector == other.stadiumSector && Objects.equals(startsAt, other.startsAt)
 				&& Objects.equals(id, other.id);
 	}
-
-//	public String shared(String phone) {
-//		return this + " is shared via phone number:" + phone;
-//	}
-//
-//	public String shared(String phone, String email) {
-//		return shared(phone) + "\nand email:email";
-//	}
 }
