@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import andersen.dev.tickets.model.Ticket;
-import andersen.dev.tickets.parser.TicketParser;
-import andersen.dev.tickets.repository.TicketRepository;
 import andersen.dev.tickets.validator.TicketValidator;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolation;
@@ -23,6 +21,7 @@ import jakarta.validation.Validation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import andersen.dev.tickets.dao.TicketDAO;
 
 @Component
 @RequiredArgsConstructor
@@ -32,19 +31,19 @@ public class TicketService {
 	private TicketValidator validator;
 
 	@Autowired
-	private final TicketRepository repository;
+	private final TicketDAO ticketDAO;
 
 	@PostConstruct
 	public void init() throws IOException {
-		repository.setTickets(validator.getValidTickets());
+		ticketDAO.setTickets(validator.getValidTickets());
 	}
 
 	public void addTicket(Ticket ticket) {
-		repository.addTicket(ticket);
+		ticketDAO.addTicket(ticket);
 	}
 
 	public List<Ticket> getTickets() {
-		return repository.getTickets();
+		return ticketDAO.getTickets();
 	}
 
 }
