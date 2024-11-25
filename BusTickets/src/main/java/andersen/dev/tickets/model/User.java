@@ -7,8 +7,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 @AllArgsConstructor
+@ToString
+@Accessors (chain = true)
 public class User {
 	@Getter
 	@Setter
@@ -20,11 +24,11 @@ public class User {
 	@Setter
 	private LocalDateTime creationDate;
 
-	User() {
+	public User() {
 		creationDate = LocalDateTime.now();
 	}
 
-	User(String name) {
+	public User(String name) {
 		this.name = name;
 	}
 }

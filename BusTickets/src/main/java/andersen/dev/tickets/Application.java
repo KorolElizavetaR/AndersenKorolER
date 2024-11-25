@@ -12,7 +12,7 @@ public class Application {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConnectionSupplier.class);
 		TicketService ticketService = context.getBean(TicketService.class);
-		ticketService.insertTicket(new Ticket(TicketType.MONTH), 1);
+	
 	}
 	
 }

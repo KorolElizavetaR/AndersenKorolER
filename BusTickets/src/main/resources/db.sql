@@ -10,7 +10,7 @@ CREATE TABLE ticket (
 	ticket_id char(4) PRIMARY KEY,
 	user_id int REFERENCES "user" (user_id),
 	"type" ticket_type NOT NULL DEFAULT 'DAY',
-	creation_date timestamp NOT NULL DEFAULT NOW()
+	ticket_creation_date timestamp NOT NULL DEFAULT NOW()
 )
 
 ALTER TABLE ticket DROP CONSTRAINT ticket_user_id_fkey;
