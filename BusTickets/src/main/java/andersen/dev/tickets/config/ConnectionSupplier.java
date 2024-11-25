@@ -24,8 +24,4 @@ public class ConnectionSupplier {
 		Class.forName(driver);
 		connection = DriverManager.getConnection(URL, username, password);
 	}
-
-	public void close() throws SQLException {
-		connection.close();
-	}
 }
