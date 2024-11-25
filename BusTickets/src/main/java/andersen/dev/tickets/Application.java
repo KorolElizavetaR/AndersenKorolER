@@ -2,17 +2,14 @@ package andersen.dev.tickets;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import andersen.dev.tickets.config.ConnectionSupplier;
-import andersen.dev.tickets.model.Ticket;
-import andersen.dev.tickets.model.TicketType;
-import andersen.dev.tickets.service.TicketService;
+import andersen.dev.tickets.config.BeanConfig;
+import andersen.dev.tickets.service.UserService;
 
 public class Application {
 
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConnectionSupplier.class);
-		TicketService ticketService = context.getBean(TicketService.class);
-	
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+		UserService service = context.getBean(UserService.class);
 	}
 	
 }

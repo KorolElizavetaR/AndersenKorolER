@@ -12,8 +12,6 @@ import java.sql.Statement;
 import lombok.Getter;
 
 @Component
-@ComponentScan("andersen.dev.tickets")
-@PropertySource("classpath:application.properties")
 public class ConnectionSupplier {
 	@Getter
 	private final Connection connection;

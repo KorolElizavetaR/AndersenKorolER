@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import andersen.dev.tickets.model.Ticket;
+import andersen.dev.tickets.model.TicketType;
 import lombok.RequiredArgsConstructor;
 import andersen.dev.tickets.config.ConnectionSupplier;
 import andersen.dev.tickets.dao.TicketDAO;
@@ -63,13 +64,26 @@ public class TicketService {
 		}
 		return null;
 	}
-	
-	public List <Ticket> getTicketsByUserId(int userId){
+
+	public List<Ticket> getTicketsByUserId(int userId) {
 		try (Connection connection = connSupplier.getConnection()) {
 			return ticketDAO.getTicketsByUserId(connection, userId);
 		} catch (SQLException ex) {
 			System.err.println(ex.getLocalizedMessage());
 		}
 		return null;
+	}
+
+	/**
+	 * @return the row count for SQL Data Manipulation Language (DML) statementsor;
+	 *         -1 if exception is thrown
+	 */
+	public int updateTicketType(String ticketId, TicketType type) {
+		try (Connection connection = connSupplier.getConnection()) {
+			return ticketDAO.updateTicketType(connection, ticketId, type);
+		} catch (SQLException ex) {
+			System.err.println(ex.getLocalizedMessage());
+		}
+		return -1;
 	}
 }

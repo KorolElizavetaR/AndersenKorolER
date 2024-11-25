@@ -22,7 +22,7 @@ public class TicketDAO {
 	String dqlFetchTicketById = "select * from ticket where ticket_id = ?";
 	String dqlFetchTicketsByUserId = "select * from ticket where user_id = ?";
 	String dqlFetchTicketByIdWithUser = "select * from ticket LEFT JOIN \"user\" ON  ticket.user_id = \"user\".user_id where ticket_id = ?";
-	
+	String dmlUpdateTicketType = "UPDATE ticket SET \"type\" = ?::ticket_type where ticket_id = ?";
 
 	public void addTicket(Connection connection, Ticket ticket, int userId) throws SQLException {
 		PreparedStatement ps = connection.prepareStatement(dmlInsertTicketWithUserID);
@@ -68,6 +68,13 @@ public class TicketDAO {
 			tickets.add(ticketFromResultSet(rs));
 		}
 		return tickets;
+	}
+	
+	public int updateTicketType(Connection connection, String ticketId, TicketType type) throws SQLException {
+		PreparedStatement ps = connection.prepareStatement(dmlUpdateTicketType);
+		ps.setString(1, type.getType());
+		ps.setString(2, ticketId);
+		return ps.executeUpdate();
 	}
 	
 	public static Ticket ticketFromResultSet(ResultSet rs) throws SQLException {

@@ -6,11 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import org.springframework.stereotype.Component;
+
 import andersen.dev.tickets.model.User;
 
+@Component
 public class UserDAO {
-	String dmlInsertUser = "insert into user(name, creation_date) values (?, ?)";
-	String dqlGetUser = "select * from user where user_id = ?";
+	private String dmlInsertUser = "insert into user(name, creation_date) values (?, ?)";
+	private String dqlGetUser = "select * from user where user_id = ?";
+	private String dmlDeleteUser = "DELETE FROM \"user\" WHERE user_id = ?";
+	
 	
 	public void addUser(Connection connection, User user) throws SQLException {
 		PreparedStatement ps = connection.prepareStatement(dmlInsertUser);
@@ -25,6 +30,15 @@ public class UserDAO {
 		ResultSet rs = ps.executeQuery();
 		rs.next();
 		return userFromResultSet(rs);
+	}
+	
+	/*
+	 * Delete connected tickets because of CASCADE delete;
+	 */
+	public int deleteUser(Connection connection, Integer id) throws SQLException {
+		PreparedStatement ps = connection.prepareStatement(dmlDeleteUser);
+		ps.setInt(1, id);
+		return ps.executeUpdate();
 	}
 	
 	public static User userFromResultSet(ResultSet rs) throws SQLException {

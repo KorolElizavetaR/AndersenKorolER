@@ -18,21 +18,30 @@ public class UserService {
 	private final ConnectionSupplier connSupplier;
 	@Autowired
 	private final UserDAO userDAO;
-	
+
 	public void addUser(User user) {
 		try (Connection connection = connSupplier.getConnection()) {
 			userDAO.addUser(connection, user);
 		} catch (SQLException ex) {
 			System.err.println(ex.getLocalizedMessage());
-		}		
+		}
 	}
-	
+
 	public User getUserById(int id) {
 		try (Connection connection = connSupplier.getConnection()) {
 			return userDAO.getUserById(connection, id);
 		} catch (SQLException ex) {
 			System.err.println(ex.getLocalizedMessage());
 		}
-		return null;		
+		return null;
+	}
+
+	public int deleteUser(int id) {
+		try (Connection connection = connSupplier.getConnection()) {
+			return userDAO.deleteUser(connection, id);
+		} catch (SQLException ex) {
+			System.err.println(ex.getLocalizedMessage());
+		}
+		return -1;
 	}
 }
