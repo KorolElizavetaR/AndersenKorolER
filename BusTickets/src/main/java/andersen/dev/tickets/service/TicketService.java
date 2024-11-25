@@ -1,30 +1,21 @@
 package andersen.dev.tickets.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import andersen.dev.tickets.model.Ticket;
-import andersen.dev.tickets.parser.TicketParser;
 import andersen.dev.tickets.repository.TicketRepository;
+import andersen.dev.tickets.repository.ViolatedTicketRepository;
 import andersen.dev.tickets.validator.TicketValidator;
 import jakarta.annotation.PostConstruct;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Path;
-import jakarta.validation.Validation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class TicketService {
 	@Autowired
@@ -33,14 +24,23 @@ public class TicketService {
 
 	@Autowired
 	private final TicketRepository repository;
+	@Autowired
+	@Getter
+	private final ViolatedTicketRepository allTicketRepository;
 
 	@PostConstruct
 	public void init() throws IOException {
-		repository.setTickets(validator.getValidTickets());
+		for (Ticket ticket : allTicketRepository.getAllTickets()) {
+			try {
+				repository.addTicket(validator.validateTicket(ticket));
+			} catch (ConstraintViolationException ex) {
+				allTicketRepository.addViolation(ex.getLocalizedMessage());
+			}
+		}
 	}
 
 	public void addTicket(Ticket ticket) {
-		repository.addTicket(ticket);
+		repository.addTicket(validator.validateTicket(ticket));
 	}
 
 	public List<Ticket> getTickets() {

@@ -20,7 +20,7 @@ public class Application {
 	public static void main(String[] args) throws InstanceNotFoundException {
 		TicketRepository ticketRepository = new TicketRepository();
 		TicketService ticketService = new TicketService(ticketRepository);
-		UserService userService = new UserService(new UserRepository(), ticketRepository);
+		UserService userService = new UserService(new UserRepository());
 		User user = userService.addUser(new User());
 		User admin = userService.addUser(new User("+375(29)123-45-67", "example@gmail.com", Roles.ROLE_ADMIN));
 

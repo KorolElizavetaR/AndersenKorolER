@@ -1,10 +1,5 @@
 package andersen.task.tickets.service;
 
-import java.lang.reflect.Method;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +7,6 @@ import javax.management.InstanceNotFoundException;
 
 import andersen.task.tickets.exception.TicketNotFoundException;
 import andersen.task.tickets.model.Ticket;
-import andersen.task.tickets.model.enumeration.SectorHall;
 import andersen.task.tickets.repository.TicketRepository;
 import andersen.task.tickets.util.Printable;
 import jakarta.validation.ConstraintViolation;
