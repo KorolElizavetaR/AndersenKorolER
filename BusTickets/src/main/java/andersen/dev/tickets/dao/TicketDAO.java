@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,7 @@ public class TicketDAO {
 	String dmlInsertTicketWithUserID = "insert into ticket(ticket_id,user_id,\"type\", ticket_creation_date) values (?,?,?::ticket_type,?)";
 	String dmlInsertTicket = "insert into ticket(ticket_id, \"type\", creation_date) values (?,?::ticket_type,?)";
 	String dqlFetchTicketById = "select * from ticket where ticket_id = ?";
+	String dqlFetchTicketsByUserId = "select * from ticket where user_id = ?";
 	String dqlFetchTicketByIdWithUser = "select * from ticket LEFT JOIN \"user\" ON  ticket.user_id = \"user\".user_id where ticket_id = ?";
 	
 
@@ -54,6 +57,17 @@ public class TicketDAO {
 		Ticket tc = ticketFromResultSet(rs);
 		tc.setUser(UserDAO.userFromResultSet(rs));
 		return tc;
+	}
+	
+	public List <Ticket> getTicketsByUserId(Connection connection, int userId) throws SQLException {
+		List <Ticket> tickets = new ArrayList<>();
+		PreparedStatement ps = connection.prepareStatement(dqlFetchTicketsByUserId);
+		ps.setInt(1, userId);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			tickets.add(ticketFromResultSet(rs));
+		}
+		return tickets;
 	}
 	
 	public static Ticket ticketFromResultSet(ResultSet rs) throws SQLException {

@@ -2,6 +2,7 @@ package andersen.dev.tickets.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,8 +23,7 @@ public class TicketService {
 	/**
 	 * @param ticket is inserted into table
 	 * @param userId adds person to ticket If userId is not in table, SQLException
-	 *               is handled as a message to user
-	 * @return
+	 *               is handled as a err message to user
 	 */
 	public void insertTicket(Ticket ticket, int userId) {
 		try (Connection connection = connSupplier.getConnection()) {
@@ -36,7 +36,6 @@ public class TicketService {
 	/**
 	 * @param ticket inserted in database A small possibility of existing generated
 	 *               key is ignored
-	 * @return a message (
 	 */
 	public void insertTicket(Ticket ticket) {
 		try (Connection connection = connSupplier.getConnection()) {
@@ -48,8 +47,7 @@ public class TicketService {
 
 	public Ticket getTicket(String ticketId) {
 		try (Connection connection = connSupplier.getConnection()) {
-			Ticket ticket = ticketDAO.getTicket(connection, ticketId);
-			return ticket;
+			return ticketDAO.getTicket(connection, ticketId);
 		} catch (SQLException ex) {
 			System.err.println(ex.getLocalizedMessage());
 		}
@@ -60,6 +58,15 @@ public class TicketService {
 		try (Connection connection = connSupplier.getConnection()) {
 			Ticket ticket = ticketDAO.getTicketWithUser(connection, ticketId);
 			return ticket;
+		} catch (SQLException ex) {
+			System.err.println(ex.getLocalizedMessage());
+		}
+		return null;
+	}
+	
+	public List <Ticket> getTicketsByUserId(int userId){
+		try (Connection connection = connSupplier.getConnection()) {
+			return ticketDAO.getTicketsByUserId(connection, userId);
 		} catch (SQLException ex) {
 			System.err.println(ex.getLocalizedMessage());
 		}
