@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>andersen</groupId>
+	<artifactId>mvn</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>MavenBuild</name>
+
+	<properties>
+		<cowsay.ver>1.1.0</cowsay.ver>
+		<shade-plugin.ver>3.6.0</shade-plugin.ver>
+		<mvn-jar-plugin.ver>3.1.0</mvn-jar-plugin.ver>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.github.ricksbrown</groupId>
+			<artifactId>cowsay</artifactId>
+			<version>${cowsay.ver}</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>${shade-plugin.ver}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Build an executable JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${mvn-jar-plugin.ver}</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>andersen.mvn.Application</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
