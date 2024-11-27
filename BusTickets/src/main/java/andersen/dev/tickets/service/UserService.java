@@ -32,7 +32,8 @@ public class UserService {
 	public UserDTO getUserByIdWithoutTickets(int id) {
 		return userMapper.getUserDTO(userRepository.getUserByIdWithoutTickets(id));
 	}
-//	public int deleteUser(int id) {
-//		
-//	}
+	
+	public boolean deleteUser(int id) {
+		return userRepository.deleteUser(id);
+	}
 }

@@ -22,6 +22,20 @@ import lombok.RequiredArgsConstructor;
 public class UserRepository {
 	private final SessionSupplier supplier;
 
+	public boolean deleteUser(int id) {
+		boolean succesfulRemoval = false;
+		Session session = supplier.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		User user = session.get(User.class, id);
+		if (user != null) {
+			session.remove(user);
+			succesfulRemoval = true;
+		}
+		transaction.commit();
+		session.close();
+		return succesfulRemoval;
+	}
+
 	public Set<User> getUserByIdWithTickets(int id) {
 		Session session = supplier.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.beginTransaction();

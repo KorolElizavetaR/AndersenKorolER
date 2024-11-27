@@ -17,7 +17,7 @@ public class Application {
 		UserService userService = context.getBean(UserService.class);
 		TicketService ticketService = context.getBean(TicketService.class);
 		//System.out.println(ticketService.insertTicket(new Ticket().setUser(new User("GGG"))));
-		//System.out.println(userService.getUserByIdWithoutTickets(1));
+		userService.deleteUser(1);
 	}
 	
 }

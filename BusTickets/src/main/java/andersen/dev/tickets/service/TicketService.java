@@ -1,7 +1,5 @@
 package andersen.dev.tickets.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +9,6 @@ import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.model.TicketType;
 import andersen.dev.tickets.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
-import andersen.dev.tickets.config.ConnectionSupplier;
-import andersen.dev.tickets.dao.TicketDAO;
-import andersen.dev.tickets.dto.TicketDTO;
 
 @Component
 @RequiredArgsConstructor
