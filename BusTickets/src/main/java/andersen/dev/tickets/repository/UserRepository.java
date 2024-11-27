@@ -1,7 +1,6 @@
 package andersen.dev.tickets.repository;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
@@ -9,7 +8,6 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import andersen.dev.tickets.config.SessionSupplier;
-import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.model.User;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

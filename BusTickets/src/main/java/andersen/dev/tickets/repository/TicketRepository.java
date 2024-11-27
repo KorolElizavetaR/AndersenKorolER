@@ -6,17 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-
 import andersen.dev.tickets.config.SessionSupplier;
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.model.TicketType;
-import andersen.dev.tickets.model.User;
-import jakarta.persistence.Id;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 

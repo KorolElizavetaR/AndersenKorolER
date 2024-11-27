@@ -1,11 +1,7 @@
 package andersen.dev.tickets.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import andersen.dev.tickets.dto.UserDTO;
@@ -17,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	//@Autowired
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 
@@ -32,7 +27,7 @@ public class UserService {
 	public UserDTO getUserByIdWithoutTickets(int id) {
 		return userMapper.getUserDTO(userRepository.getUserByIdWithoutTickets(id));
 	}
-	
+
 	public boolean deleteUser(int id) {
 		return userRepository.deleteUser(id);
 	}

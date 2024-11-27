@@ -2,7 +2,6 @@ package andersen.dev.tickets.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import andersen.dev.tickets.model.Ticket;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class TicketService {
-	@Autowired
 	private final TicketRepository ticketRepository;
 
 	public Ticket insertTicket(Ticket ticket) {
