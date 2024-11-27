@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-	//@Autowired
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 
