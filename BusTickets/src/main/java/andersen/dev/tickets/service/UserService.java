@@ -2,46 +2,37 @@ package andersen.dev.tickets.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import andersen.dev.tickets.config.ConnectionSupplier;
-import andersen.dev.tickets.dao.UserDAO;
+import andersen.dev.tickets.dto.UserDTO;
+import andersen.dev.tickets.mapper.UserMapper;
 import andersen.dev.tickets.model.User;
+import andersen.dev.tickets.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserService {
-	@Autowired
-	private final ConnectionSupplier connSupplier;
-	@Autowired
-	private final UserDAO userDAO;
+	//@Autowired
+	private final UserRepository userRepository;
+	private final UserMapper userMapper;
 
-	public void addUser(User user) {
-		try (Connection connection = connSupplier.getConnection()) {
-			userDAO.addUser(connection, user);
-		} catch (SQLException ex) {
-			System.err.println(ex.getLocalizedMessage());
-		}
+	public User addUser(User user) {
+		return userRepository.addUser(user);
 	}
 
-	public User getUserById(int id) {
-		try (Connection connection = connSupplier.getConnection()) {
-			return userDAO.getUserById(connection, id);
-		} catch (SQLException ex) {
-			System.err.println(ex.getLocalizedMessage());
-		}
-		return null;
+	public Set<User> getUserByIdWithTickets(int id) {
+		return userRepository.getUserByIdWithTickets(id);
 	}
 
-	public int deleteUser(int id) {
-		try (Connection connection = connSupplier.getConnection()) {
-			return userDAO.deleteUser(connection, id);
-		} catch (SQLException ex) {
-			System.err.println(ex.getLocalizedMessage());
-		}
-		return -1;
+	public UserDTO getUserByIdWithoutTickets(int id) {
+		return userMapper.getUserDTO(userRepository.getUserByIdWithoutTickets(id));
 	}
+//	public int deleteUser(int id) {
+//		
+//	}
 }

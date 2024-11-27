@@ -1,6 +1,0 @@
-json.ticket.filepath = src/main/resources/tickets.json 
-
-datasource.url = jdbc:postgresql://localhost:5432/tickets
-datasource.driver-class-name=org.postgresql.Driver
-datasource.username = my_username
-datasource.password = my_password
