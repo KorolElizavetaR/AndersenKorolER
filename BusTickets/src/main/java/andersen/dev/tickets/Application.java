@@ -16,8 +16,6 @@ public class Application {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
 		UserService userService = context.getBean(UserService.class);
 		TicketService ticketService = context.getBean(TicketService.class);
-		//System.out.println(ticketService.insertTicket(new Ticket().setUser(new User("GGG"))));
-		userService.deleteUser(1);
 	}
 	
 }
