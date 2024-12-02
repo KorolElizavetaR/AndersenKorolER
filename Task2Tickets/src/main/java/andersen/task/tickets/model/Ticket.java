@@ -1,48 +1,41 @@
 package andersen.task.tickets.model;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
-import com.mifmif.common.regex.Generex;
-
+import andersen.task.tickets.model.enumeration.SectorHall;
+import andersen.task.tickets.util.Indexable;
+import andersen.task.tickets.util.Printable;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Ticket {
-	private static final Generex TICKET_ID_GENERATOR = new Generex("[a-zA-Z1-9]{1,4}");
-	private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+public class Ticket extends Indexable implements Printable {
+	private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	@Getter
 	private static final BigDecimal MAX_BACKPACK_WEIGHT = new BigDecimal("20.250");
-	private final char[] ticketID;
-	@Setter
 	@Getter
-	@Size (max = 10)
+	@Size(max = 10)
 	private String consertHall;
-	@Override
-	public String toString() {
-		return "Ticket [ticketID=" + getTicketID() + ", consertHall=" + consertHall + ", eventCode="
-				+ eventCode + ", createdAt=" + getCreatedAt() + ", startsAt=" + getStartsAt() + ", isPromo=" + isPromo
-				+ ", stadiumSector=" + stadiumSector + ", price=" + price + ", MAX_BACKPACK_WEIGHT = " + MAX_BACKPACK_WEIGHT + "]";
-	}
-
-	@Min (value = 100)
-	@Max (value = 999)
-	@Setter
+	@Pattern (regexp = "\\d{3}")
 	@Getter
-	private int eventCode;
-	private final Date createdAt;
-	@Future
-	private Calendar startsAt;
-	@Getter
+	private String eventCode;
+	private final LocalDateTime createdAt;
 	@Setter
+	private LocalDateTime startsAt;
+	@Getter
 	private boolean isPromo;
 	@Getter
 	@Setter
@@ -51,41 +44,62 @@ public class Ticket {
 	@Setter
 	@Positive
 	private BigDecimal price;
-	
+	@Getter
+	private boolean isExpired;
+
 	public Ticket() {
-		char[] generatedId = TICKET_ID_GENERATOR.random().toCharArray();
-		ticketID = new char[generatedId.length];
-		for (int i = 0; i < generatedId.length; i++) {
-			this.ticketID[i] = generatedId[i];
-		}
-		this.createdAt = new Date();
+		this.createdAt = LocalDateTime.now();
 	}
-	
-	public Ticket(String consertHall, int eventCode, Calendar startsAt) {
+
+	public Ticket(String consertHall, String eventCode, LocalDateTime startsAt) {
 		this();
 		this.consertHall = consertHall;
 		this.eventCode = eventCode;
 		this.startsAt = startsAt;
+		this.isExpired = !this.startsAt.isAfter(LocalDateTime.now());
 	}
-	
-	public Ticket(String consertHall, int eventCode, Calendar startsAt, boolean isPromo, SectorHall stadiumSector, double price)
-	{
+
+	public Ticket(String consertHall, String eventCode, LocalDateTime startsAt, boolean isPromo, SectorHall stadiumSector,
+			double price) {
 		this(consertHall, eventCode, startsAt);
 		this.isPromo = isPromo;
 		this.stadiumSector = stadiumSector;
 		this.price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP);
 	}
-	
-	public String getTicketID()
-	{
-		return String.copyValueOf(ticketID);
-	}
 
 	public String getCreatedAt() {
 		return DATETIME_FORMAT.format(createdAt);
 	}
-	
+
 	public String getStartsAt() {
-		return DATETIME_FORMAT.format(startsAt.getTime());
+		return DATETIME_FORMAT.format(startsAt);
+	}
+
+	@Override
+	public String toString() {
+		return "Ticket [ticketID=" + getID() + ", consertHall=" + consertHall + ", eventCode=" + eventCode
+				+ ", createdAt=" + getCreatedAt() + ", startsAt=" + getStartsAt() + ", isPromo=" + isPromo
+				+ ", stadiumSector=" + stadiumSector + ", price=" + price + ", MAX_BACKPACK_WEIGHT = "
+				+ MAX_BACKPACK_WEIGHT + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(consertHall, createdAt, eventCode, isPromo, price, stadiumSector, startsAt, id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ticket other = (Ticket) obj;
+		return Objects.equals(consertHall, other.consertHall) && Objects.equals(createdAt, other.createdAt)
+				&& eventCode == other.eventCode && isPromo == other.isPromo && Objects.equals(price, other.price)
+				&& stadiumSector == other.stadiumSector && Objects.equals(startsAt, other.startsAt)
+				&& Objects.equals(id, other.id);
 	}
 }
