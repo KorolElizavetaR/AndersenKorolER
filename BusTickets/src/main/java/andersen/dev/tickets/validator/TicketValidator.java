@@ -19,11 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class TicketValidator {
-	/**
-	 * If field breaks several constraints, it is considered as 
-	 * one violation. If price = -17, it technically breaks two
-	 * violations, but considered as one
-	 */
+
 	public Ticket validateTicket(Ticket ticket) {
 		Set<ConstraintViolation<Ticket>> violations = Validation.buildDefaultValidatorFactory().getValidator()
 				.validate(ticket);

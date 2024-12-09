@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import andersen.dev.tickets.model.Ticket;
+import andersen.dev.tickets.parser.TicketParser;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
