@@ -16,7 +16,7 @@ public class Application {
 		//UserService userService = context.getBean(UserService.class);
 		TicketService ticketService = context.getBean(TicketService.class);
 		
-		ticketService.insertTicket(new Ticket("AAA", TicketType.DAY, LocalDate.now(), 10));
+		ticketService.insertTicket(new Ticket("AAA", TicketType.WEEK, LocalDate.now(), 10));
 	}
 	
 }
