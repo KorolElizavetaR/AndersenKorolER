@@ -2,9 +2,6 @@ package andersen.dev.tickets.repository;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import andersen.dev.tickets.model.Ticket;
@@ -29,7 +26,6 @@ public class TicketRepository {
 	 * @return saved ticket
 	 */
 	public Ticket addTicket(Ticket ticket) {
-		//Session session = entityManager.getCurrentSession();
 		entityManager.persist(ticket);
 		return ticket;
 	}
@@ -40,21 +36,17 @@ public class TicketRepository {
 	}
 
 	public Ticket updateTicketType(Integer ticketId, TicketType type) {
-		//Session session = entityManager.getCurrentSession();
 		Ticket ticket = entityManager.find(Ticket.class, ticketId);
 		ticket.setTicketType(type);
-		//session.close();
 		return ticket;
 	}
 
 	public List<Ticket> getTicketsByUser(Integer userId) {
-	//	Session session = entityManager.getCurrentSession();
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Ticket> cq = cb.createQuery(Ticket.class);
 		Root<Ticket> ticketRoot = cq.from(Ticket.class);
 		cq.select(ticketRoot).where(cb.equal(ticketRoot.get("user").get("id"), userId));
 		List<Ticket> tickets = entityManager.createQuery(cq).getResultList();
-	//	session.close();
 		return tickets;
 	}
 }

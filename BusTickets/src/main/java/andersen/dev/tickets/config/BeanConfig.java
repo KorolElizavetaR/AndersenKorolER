@@ -31,8 +31,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BeanConfig {
 	@Autowired
-	private final ApplicationContext context;
-	@Autowired
 	private final Environment environment;
 
 	@Bean

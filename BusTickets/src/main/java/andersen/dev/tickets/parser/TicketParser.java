@@ -29,12 +29,7 @@ public class TicketParser {
 		List<Ticket> tickets = new ArrayList<>();
 
 		mapper.findAndRegisterModules();
-		JsonNode nodes;
-		try {
-			nodes = mapper.readTree(new File(filepath));
-		} catch (IOException ex) {
-			throw new IOException(filepath + " is not a valid directory");
-		}
+		JsonNode nodes = mapper.readTree(new File(filepath));
 
 		for (JsonNode element : nodes) {
 			String ticketName = element.path("ticketName").asText();
