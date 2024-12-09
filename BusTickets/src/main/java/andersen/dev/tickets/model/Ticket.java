@@ -1,33 +1,43 @@
 package andersen.dev.tickets.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import andersen.dev.tickets.constraint.Even;
-import andersen.dev.tickets.constraint.ValidDateForTicketType;
-import jakarta.validation.constraints.NotBlank;
+import andersen.dev.tickets.config.Indexable;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Data
-@ValidDateForTicketType
-public class Ticket {
-	@NotBlank
-	@Pattern (regexp = "[A-Z]{3}")
-	private String ticketName;
+@Accessors (chain = true)
+@EqualsAndHashCode (callSuper = true)
+@ToString
+public class Ticket extends Indexable {
+	@Getter
+	@Setter
 	@NotNull
 	private TicketType ticketType;
-	@PastOrPresent
-	private LocalDate startDate;
-	@Positive
-	@Even
-	private int price; 
+	@Getter
+	@Setter
+	private LocalDateTime creationDate;
+	
+	@ToString.Exclude
+	@Setter
+	@Getter
+	private User user;
+	
+	public Ticket() {
+		generateID();
+		creationDate = LocalDateTime.now();
+		ticketType = TicketType.DAY;
+	}
+	
+	public Ticket(TicketType ticketType){
+		this();
+		this.ticketType = ticketType;
+	}
 }

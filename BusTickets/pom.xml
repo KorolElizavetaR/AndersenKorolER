@@ -8,7 +8,7 @@
 	<name>BusTickets</name>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -50,6 +50,18 @@
 			<groupId>org.glassfish</groupId>
 			<artifactId>jakarta.el</artifactId>
 			<version>4.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.mifmif</groupId>
+			<artifactId>generex</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.4</version>
 		</dependency>
 
 	</dependencies>

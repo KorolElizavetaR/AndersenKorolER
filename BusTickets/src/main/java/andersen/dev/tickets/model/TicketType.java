@@ -1,15 +1,13 @@
 package andersen.dev.tickets.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 public enum TicketType {
 	DAY("DAY"), MONTH("MONTH"), YEAR("YEAR"), PRIME("PRIME");
-	
-	String type;
-	
-	TicketType(String type) {
-		this.type = type;
-	}
-
+	@Getter
+	@Setter
+	private String type;
 }
