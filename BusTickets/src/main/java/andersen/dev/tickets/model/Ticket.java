@@ -1,5 +1,7 @@
 package andersen.dev.tickets.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +19,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -33,6 +37,11 @@ public class Ticket {
 	@Column(name = "id")
 	private Integer ticketId;
 
+	@Column(name = "ticket_name")
+	@NotNull
+	@Pattern(regexp = "[A-Z]{3}")
+	private String ticketName;
+
 	@NotNull
 	@Column(name = "type")
 	@JdbcType(PostgreSQLEnumJdbcType.class)
@@ -40,19 +49,24 @@ public class Ticket {
 
 	@Column(name = "ticket_creation_date", updatable = false)
 	@CreationTimestamp
-	private LocalDateTime creationDate;
+	private LocalDate creationDate;
+
+	@Column(name = "price", nullable = false)
+	@PositiveOrZero
+	private Integer price;
 
 	@ToString.Exclude
-	@ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	public Ticket() {
-		ticketType = TicketType.DAY;
+	public Ticket(@NotNull @Pattern(regexp = "[A-Z]{3}") String ticketName, @NotNull TicketType ticketType,
+			LocalDate creationDate, @PositiveOrZero int price) {
+		super();
+		this.ticketName = ticketName;
+		this.ticketType = ticketType;
+		this.creationDate = creationDate;
+		this.price = price;
 	}
 
-	public Ticket(TicketType ticketType) {
-		this();
-		this.ticketType = ticketType;
-	}
 }

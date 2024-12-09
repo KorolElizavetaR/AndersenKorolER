@@ -3,12 +3,14 @@ package andersen.dev.tickets.repository;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import andersen.dev.tickets.config.SessionSupplier;
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.model.TicketType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -17,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class TicketRepository {
-
-	private final SessionSupplier supplier;
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	/**
 	 * Add ticket to database. If Ticket instance contains a non null user field,
@@ -27,43 +29,32 @@ public class TicketRepository {
 	 * @return saved ticket
 	 */
 	public Ticket addTicket(Ticket ticket) {
-		Session session = supplier.getSessionFactory().getCurrentSession();
-		Transaction transaction = session.beginTransaction();
-		session.persist(ticket);
-		transaction.commit();
-		session.close();
+		//Session session = entityManager.getCurrentSession();
+		entityManager.persist(ticket);
 		return ticket;
 	}
 
 	public Ticket getTicketById(Integer ticketId) {
-		Session session = supplier.getSessionFactory().getCurrentSession();
-		Transaction transaction = session.beginTransaction();
-		Ticket ticket = session.get(Ticket.class, ticketId);
-		transaction.commit();
-		session.close();
+		Ticket ticket = entityManager.find(Ticket.class, ticketId);
 		return ticket;
 	}
 
 	public Ticket updateTicketType(Integer ticketId, TicketType type) {
-		Session session = supplier.getSessionFactory().getCurrentSession();
-		Transaction transaction = session.beginTransaction();
-		Ticket ticket = session.get(Ticket.class, ticketId);
+		//Session session = entityManager.getCurrentSession();
+		Ticket ticket = entityManager.find(Ticket.class, ticketId);
 		ticket.setTicketType(type);
-		transaction.commit();
-		session.close();
+		//session.close();
 		return ticket;
 	}
 
 	public List<Ticket> getTicketsByUser(Integer userId) {
-		Session session = supplier.getSessionFactory().getCurrentSession();
-		Transaction transaction = session.beginTransaction();
-		CriteriaBuilder cb = session.getCriteriaBuilder();
+	//	Session session = entityManager.getCurrentSession();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Ticket> cq = cb.createQuery(Ticket.class);
 		Root<Ticket> ticketRoot = cq.from(Ticket.class);
 		cq.select(ticketRoot).where(cb.equal(ticketRoot.get("user").get("id"), userId));
-		List<Ticket> tickets = session.createQuery(cq).getResultList();
-		transaction.commit();
-		session.close();
+		List<Ticket> tickets = entityManager.createQuery(cq).getResultList();
+	//	session.close();
 		return tickets;
 	}
 }
