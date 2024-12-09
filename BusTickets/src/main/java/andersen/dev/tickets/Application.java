@@ -11,7 +11,7 @@ public class Application {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
 		UserService userService = context.getBean(UserService.class);
-		TicketService ticketService = context.getBean(TicketService.class);
+		TicketService ticketService = context.getBean(TicketService.class);s
 	}
 	
 }

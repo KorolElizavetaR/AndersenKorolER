@@ -31,5 +31,9 @@ local.properties
 ### custom ###
 *.properties
 *.rar
+<<<<<<< HEAD
 Task2Tickets/**
 GradleBuild/**
+=======
+GradleBuild/**
+>>>>>>> refs/heads/master

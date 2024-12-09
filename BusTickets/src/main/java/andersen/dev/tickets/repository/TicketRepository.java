@@ -17,11 +17,13 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class TicketRepository {
+
 	private final SessionSupplier supplier;
 
 	/**
-	 * Add ticket to database. If Ticket instance contains a non null user
-	 * field, persists user with ticket
+	 * Add ticket to database. If Ticket instance contains a non null user field,
+	 * persists user with ticket
+	 * 
 	 * @return saved ticket
 	 */
 	public Ticket addTicket(Ticket ticket) {

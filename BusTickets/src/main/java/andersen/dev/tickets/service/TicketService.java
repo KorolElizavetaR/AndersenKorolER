@@ -2,14 +2,14 @@ package andersen.dev.tickets.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.model.TicketType;
 import andersen.dev.tickets.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class TicketService {
 	private final TicketRepository ticketRepository;
@@ -17,10 +17,11 @@ public class TicketService {
 	public Ticket insertTicket(Ticket ticket) {
 		return ticketRepository.addTicket(ticket);
 	}
-
+	
 	public Ticket getTicket(Integer ticketId) {
 		return ticketRepository.getTicketById(ticketId);
 	}
+
 
 	public List<Ticket> getTicketsByUserId(int userId) {
 		return ticketRepository.getTicketsByUser(userId);
