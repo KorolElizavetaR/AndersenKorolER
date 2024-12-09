@@ -3,6 +3,7 @@ package andersen.dev.tickets.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import andersen.dev.tickets.model.Ticket;
 import andersen.dev.tickets.model.TicketType;
@@ -11,22 +12,24 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TicketService {
 	private final TicketRepository ticketRepository;
-
+	
+	@Transactional(readOnly = false)
 	public Ticket insertTicket(Ticket ticket) {
 		return ticketRepository.addTicket(ticket);
 	}
-	
+
 	public Ticket getTicket(Integer ticketId) {
 		return ticketRepository.getTicketById(ticketId);
 	}
-
 
 	public List<Ticket> getTicketsByUserId(int userId) {
 		return ticketRepository.getTicketsByUser(userId);
 	}
 
+	@Transactional(readOnly = false)
 	public Ticket updateTicketType(Integer ticketId, TicketType type) {
 		return ticketRepository.updateTicketType(ticketId, type);
 	}
