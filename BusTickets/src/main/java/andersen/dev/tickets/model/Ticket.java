@@ -49,7 +49,6 @@ public class Ticket {
 
 	@NotNull
 	@Column(name = "type")
-	//@JdbcType(PostgreSQLEnumJdbcType.class)
 	@Enumerated(EnumType.STRING)
 	private TicketType ticketType;
 

@@ -1,7 +1,5 @@
 package andersen.dev.tickets.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,10 +34,6 @@ public class TicketService {
 	public Ticket getTicket(Integer ticketId) {
 		return ticketRepository.findById(ticketId).orElseThrow(()->new TicketNotFoundException());
 	}
-
-//	public List<Ticket> getTicketsByUserId(int userId) {
-//		return ticketRepository.getTicketsByUser(userId);
-//	}
 
 	@Transactional(readOnly = false)
 	public Ticket updateTicketType(Integer ticketId, TicketType type) {
