@@ -1,34 +1,44 @@
 package andersen.dev.tickets.service;
 
-import java.util.Set;
-
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import andersen.dev.tickets.dto.UserDTO;
-import andersen.dev.tickets.mapper.UserMapper;
+import andersen.dev.tickets.exception.UsertNotFoundException;
 import andersen.dev.tickets.model.User;
 import andersen.dev.tickets.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+@Transactional(readOnly = true)
+public class UserService implements UserDetailsService{
 	private final UserRepository userRepository;
-	private final UserMapper userMapper;
 
+	@Transactional(readOnly = false)
 	public User addUser(User user) {
-		return userRepository.addUser(user);
+		return userRepository.save(user);
 	}
 
-	public Set<User> getUserByIdWithTickets(int id) {
-		return userRepository.getUserByIdWithTickets(id);
+	public User getUserByIdWithTickets(int id) {
+		return userRepository.findUserWithTicketsById(id).orElseThrow(() -> new UsertNotFoundException());
 	}
 
-	public UserDTO getUserByIdWithoutTickets(int id) {
-		return userMapper.getUserDTO(userRepository.getUserByIdWithoutTickets(id));
+	public User getUserByIdWithoutTickets(int id) {
+		return userRepository.findById(id).orElseThrow(() -> new UsertNotFoundException());
 	}
 
-	public boolean deleteUser(int id) {
-		return userRepository.deleteUser(id);
+	@Transactional(readOnly = false)
+	public void deleteUser(int id) {
+		User user = userRepository.findUserWithTicketsById(id).orElseThrow(() -> new UsertNotFoundException());
+		userRepository.delete(user);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username).orElseThrow(() -> new UsertNotFoundException());
+		return user;
 	}
 }
