@@ -1,13 +1,12 @@
 package andersen.dev.tickets.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
+import andersen.dev.tickets.constraint.annotation.Even;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +18,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,10 +50,12 @@ public class Ticket {
 
 	@Column(name = "ticket_creation_date", updatable = false)
 	@CreationTimestamp
+	@PastOrPresent
 	private LocalDate creationDate;
 
 	@Column(name = "price", nullable = false)
-	@PositiveOrZero
+	@Positive
+	@Even
 	private Integer price;
 
 	@ToString.Exclude

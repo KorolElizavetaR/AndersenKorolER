@@ -5,11 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import andersen.dev.tickets.model.Ticket;
-import andersen.dev.tickets.repository.ViolatedTicketRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
@@ -20,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TicketValidator {
 
-	public Ticket validateTicket(Ticket ticket) {
+	public Ticket validateTicket(Ticket ticket) throws ConstraintViolationException {
 		Set<ConstraintViolation<Ticket>> violations = Validation.buildDefaultValidatorFactory().getValidator()
 				.validate(ticket);
 		Set<String> violatedFields = violations.stream().map(ConstraintViolation::getPropertyPath).map(Path::toString)
