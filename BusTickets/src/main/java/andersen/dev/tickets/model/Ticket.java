@@ -3,8 +3,6 @@ package andersen.dev.tickets.model;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import andersen.dev.tickets.constraint.annotation.Even;
 import jakarta.persistence.CascadeType;
@@ -59,6 +57,7 @@ public class Ticket {
 
 	@Column(name = "price", nullable = false)
 	@Positive
+	@NotNull
 	@Even
 	private Integer price;
 

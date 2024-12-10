@@ -8,7 +8,7 @@ public class EvenConstraint implements ConstraintValidator<Even, Integer> {
 
 	@Override
 	public boolean isValid(Integer value, ConstraintValidatorContext context) {
-		return value % 2 == 0;
+		return value != null && value % 2 == 0;
 	}
 
 }
