@@ -10,6 +10,8 @@ import andersen.dev.tickets.constraint.annotation.Even;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,14 +42,15 @@ public class Ticket {
 	@Column(name = "id")
 	private Integer ticketId;
 
-	@Column(name = "ticket_name")
+	@Column(name = "ticket_name", nullable = false)
 	@NotNull
 	@Pattern(regexp = "[A-Z]{3}")
 	private String ticketName;
 
 	@NotNull
 	@Column(name = "type")
-	@JdbcType(PostgreSQLEnumJdbcType.class)
+	//@JdbcType(PostgreSQLEnumJdbcType.class)
+	@Enumerated(EnumType.STRING)
 	private TicketType ticketType;
 
 	@Column(name = "ticket_creation_date", updatable = false)
@@ -61,7 +64,7 @@ public class Ticket {
 	private Integer price;
 
 	@ToString.Exclude
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 

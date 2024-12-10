@@ -1,13 +1,9 @@
 package andersen.dev.tickets.service;
 
-import java.util.Set;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import andersen.dev.tickets.aspect.annotation.EnableDML;
-import andersen.dev.tickets.dto.UserDTO;
-import andersen.dev.tickets.mapper.UserMapper;
+import andersen.dev.tickets.exception.UsertNotFoundException;
 import andersen.dev.tickets.model.User;
 import andersen.dev.tickets.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +13,23 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class UserService {
 	private final UserRepository userRepository;
-	private final UserMapper userMapper;
 
-	@EnableDML
 	@Transactional(readOnly = false)
 	public User addUser(User user) {
-		return userRepository.addUser(user);
+		return userRepository.save(user);
 	}
 
-	public Set<User> getUserByIdWithTickets(int id) {
-		return userRepository.getUserByIdWithTickets(id);
+	public User getUserByIdWithTickets(int id) {
+		return userRepository.findUserWithTicketsById(id).orElseThrow(() -> new UsertNotFoundException());
 	}
 
-	public UserDTO getUserByIdWithoutTickets(int id) {
-		return userMapper.getUserDTO(userRepository.getUserByIdWithoutTickets(id));
+	public User getUserByIdWithoutTickets(int id) {
+		return userRepository.findById(id).orElseThrow(() -> new UsertNotFoundException());
 	}
 
-	@EnableDML
 	@Transactional(readOnly = false)
 	public void deleteUser(int id) {
-		userRepository.deleteUser(id);
+		User user = userRepository.findUserWithTicketsById(id).orElseThrow(() -> new UsertNotFoundException());
+		userRepository.delete(user);
 	}
 }
