@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import andersen.dev.tickets.aspect.DmlEnableAspect;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -29,10 +31,11 @@ import lombok.RequiredArgsConstructor;
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @RequiredArgsConstructor
+@EnableAspectJAutoProxy (proxyTargetClass=true)
 public class BeanConfig {
 	@Autowired
 	private final Environment environment;
-
+	
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
