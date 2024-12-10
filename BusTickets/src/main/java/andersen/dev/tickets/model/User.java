@@ -1,9 +1,12 @@
 package andersen.dev.tickets.model;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,23 +28,37 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Data
 @Accessors(chain = true)
-public class User {
+public class User implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id")
 	private Integer userId;
 
-	@Column(name = "name", nullable = false, length = 50)
-	private String name;
+	@Column(name = "name", nullable = false, length = 50, unique = true)
+	private String username;
 
 	@Column(name = "creation_date", updatable = false)
 	@CreationTimestamp
 	private LocalDateTime creationDate;
+	
+	@Column(name ="bpassword", nullable = false)
+	private String bpassword;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Ticket> tickets;
 
-	public User(String name) {
-		this.name = name;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.bpassword;
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
 	}
 }

@@ -13,4 +13,6 @@ import andersen.dev.tickets.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("SELECT u FROM User u LEFT JOIN FETCH u.tickets WHERE u.userId = :id")
 	Optional<User> findUserWithTicketsById(@Param("id") int id);
+
+	Optional<User> findByUsername(String username);
 }
