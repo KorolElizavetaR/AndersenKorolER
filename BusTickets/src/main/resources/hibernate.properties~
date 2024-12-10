@@ -1,8 +1,0 @@
-hibernate.connection.driver_class = org.postgresql.Driver
-hibernate.connection.url = jdbc:postgresql://localhost:5432/hib_ticket
-hibernate.connection.username = my_username
-hibernate.connection.password = my_password
-hibernate.current_session_context_class = thread
-hibernate.show_sql=true
-
-spring.jpa.properties.hibernate.connection.readOnly=true
