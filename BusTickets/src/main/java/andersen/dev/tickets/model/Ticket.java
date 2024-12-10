@@ -24,12 +24,14 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "ticket")
 public class Ticket {
