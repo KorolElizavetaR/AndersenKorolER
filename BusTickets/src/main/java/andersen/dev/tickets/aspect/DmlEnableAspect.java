@@ -12,9 +12,6 @@ import andersen.dev.tickets.aspect.annotation.EnableDML;
 import andersen.dev.tickets.exeption.DMLDisabledException;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Technically it must work, but Aspect is not called during runtime.
- */
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -34,5 +31,4 @@ public class DmlEnableAspect {
 			throw new DMLDisabledException();
 		}
 	}
-
 }
