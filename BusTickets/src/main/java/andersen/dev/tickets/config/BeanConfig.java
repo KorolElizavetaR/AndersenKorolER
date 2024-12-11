@@ -6,7 +6,6 @@ import javax.sql.DataSource;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import andersen.dev.tickets.aspect.DmlEnableAspect;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -49,16 +47,17 @@ public class BeanConfig {
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource datasrc = new DriverManagerDataSource();
-		datasrc.setDriverClassName(environment.getProperty("hibernate.connection.driver_class"));
-		datasrc.setUrl(environment.getProperty("hibernate.connection.url"));
-		datasrc.setUsername(environment.getProperty("hibernate.connection.username"));
-		datasrc.setPassword(environment.getProperty("hibernate.connection.password"));
+		datasrc.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
+		datasrc.setUrl(environment.getProperty("spring.datasource.url"));
+		datasrc.setUsername(environment.getProperty("spring.datasource.username"));
+		datasrc.setPassword(environment.getProperty("spring.datasource.password"));
 		return datasrc;
 	}
 
 	private Properties hibernateProperties() {
 		Properties properties = new Properties();
-		properties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
+		properties.put("hibernate.show_sql", environment.getProperty("spring.jpa.properties.hibernate.show_sql"));
+		properties.put("hibernate.hbm2ddl.auto", environment.getProperty("spring.jpa.hibernate.ddl-auto"));
 		return properties;
 	}
 
