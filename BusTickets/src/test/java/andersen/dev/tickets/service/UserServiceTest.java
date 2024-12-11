@@ -45,9 +45,6 @@ public class UserServiceTest {
 			.setTickets(Collections.singletonList(goodTicket));
 	final User badUser = new User().setUsername("awd");
 
-	/**
-	 * Test successful scenario
-	 */
 	@Test
 	void testАddUser_succesful() {
 		when(userRepository.save(goodUser)).thenReturn(goodUser);
@@ -55,11 +52,8 @@ public class UserServiceTest {
 		verify(userRepository, times(1)).save(any(User.class));
 	}
 
-	/**
-	 * Tests scenario where null value is sent to service
-	 */
 	@Test
-	void testАddUser_invalidUserNull() {
+	void testАddUser_NullUserIsPassed() {
 		User user = null;
 		when(userRepository.save(null)).thenThrow(new IllegalArgumentException());
 		assertThrows(IllegalArgumentException.class, () -> userService.addUser(user));
@@ -76,9 +70,6 @@ public class UserServiceTest {
 		verify(userRepository, times(1)).save(any(User.class));
 	}
 
-	/**
-	 * Test scenario where DB returns result
-	 */
 	@Test
 	void testGetUserByIdWithTickets_Success() {
 		when(userRepository.findUserWithTicketsById(anyInt())).thenReturn(Optional.of(goodUserWithTickets));
@@ -86,9 +77,6 @@ public class UserServiceTest {
 		verify(userRepository, times(1)).findUserWithTicketsById(anyInt());
 	}
 
-	/**
-	 * Test scenario where DB returns 0 results
-	 */
 	@Test
 	void testGetUserByIdWithTickets_NotFound() {
 		when(userRepository.findUserWithTicketsById(anyInt())).thenReturn(Optional.empty());
@@ -96,9 +84,6 @@ public class UserServiceTest {
 		verify(userRepository, times(1)).findUserWithTicketsById(anyInt());
 	}
 
-	/**
-	 * Test scenario where DB returns result
-	 */
 	@Test
 	void testGetUserByIdWithoutTickets_Success() {
 		when(userRepository.findById(anyInt())).thenReturn(Optional.of(goodUser));
@@ -106,9 +91,6 @@ public class UserServiceTest {
 		verify(userRepository, times(1)).findById(anyInt());
 	}
 
-	/**
-	 * Test scenario where DB returns 0 results
-	 */
 	@Test
 	void testGetUserByIdWithoutTickets_NotFound() {
 		when(userRepository.findById(anyInt())).thenThrow(new UsertNotFoundException());
@@ -116,9 +98,6 @@ public class UserServiceTest {
 		verify(userRepository, times(1)).findById(anyInt());
 	}
 
-	/**
-	 * Test successful delete of user
-	 */
 	@Test
 	void testDeleteUser_success() {
 		when(userRepository.findUserWithTicketsById(anyInt())).thenReturn(Optional.of(goodUser));
@@ -128,11 +107,8 @@ public class UserServiceTest {
 		verify(userRepository, times(1)).delete(any(User.class));
 	}
 
-	/**
-	 * Test when user is not found
-	 */
 	@Test
-	void testDeleteUser_NotFound() {
+	void testDeleteUser_userNotFound() {
 		when(userRepository.findUserWithTicketsById(anyInt())).thenReturn(Optional.empty());
 		assertThrows(UsertNotFoundException.class, () -> userService.deleteUser(1));
 		verify(userRepository, times(1)).findUserWithTicketsById(anyInt());
@@ -140,21 +116,17 @@ public class UserServiceTest {
 	}
 
 	/**
-	 * Test when, for example, delete fails because of cascade issues (?)
+	 * Test when, for example, delete fails because of cascade issues
 	 */
 	@Test
 	void testDeleteUser_DeleteException() {
 		when(userRepository.findUserWithTicketsById(anyInt())).thenReturn(Optional.of(goodUserWithTickets));
-
 		doThrow(new DataIntegrityViolationException("")).when(userRepository).delete(goodUserWithTickets);
 		assertThrows(DataIntegrityViolationException.class, () -> userService.deleteUser(1));
 		verify(userRepository, times(1)).findUserWithTicketsById(anyInt());
 		verify(userRepository, times(1)).delete(goodUserWithTickets);
 	}
 
-	/**
-	 * User is succesfully found
-	 */
 	@Test
 	void testLoadUserByUsername_succesful() {
 		when(userRepository.findByUsername(goodUserWithTickets.getUsername()))
@@ -165,9 +137,6 @@ public class UserServiceTest {
 		verify(userRepository).findByUsername(anyString());
 	}
 
-	/**
-	 * User not found
-	 */
 	@Test
 	void testLoadUserByUsername_NotFound() {
 		when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
