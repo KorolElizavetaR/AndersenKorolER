@@ -1,10 +1,8 @@
 package andersen.dev.tickets.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import andersen.dev.tickets.model.User;
@@ -17,9 +15,8 @@ import lombok.RequiredArgsConstructor;
 public class AppController {
 	private final UserService userService;
 	@GetMapping("/user/{id}")
-	public ResponseEntity <User> getUser(@PathVariable ("id") Integer id){
-		return ResponseEntity.ok(userService.getUserByIdWithTickets(id));
+	public User getUser(@PathVariable ("id") Integer id){
+		return userService.getUserByIdWithTickets(id);
 	}
-	
 	
 }
