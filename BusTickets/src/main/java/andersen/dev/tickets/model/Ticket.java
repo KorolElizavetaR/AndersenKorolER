@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
@@ -42,6 +43,7 @@ public class Ticket {
 
 	@Column(name = "ticket_name")
 	@NotNull
+	@NotEmpty
 	@Pattern(regexp = "[A-Z]{3}")
 	private String ticketName;
 
@@ -62,7 +64,7 @@ public class Ticket {
 
 	@ToString.Exclude
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public Ticket(@NotNull @Pattern(regexp = "[A-Z]{3}") String ticketName, @NotNull TicketType ticketType,
